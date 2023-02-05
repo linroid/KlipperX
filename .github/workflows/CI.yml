@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    paths-ignore:
+      - README.md
+      - .github/**
+jobs:
+  build-and-test:
+    strategy:
+      matrix:
+        os: [macos, ubuntu, windows]
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build
+        run: ./gradlew package
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: Klipper-${{ matrix.os }}-binaries
+          path: ./desktop/build/compose/binaries/main
+      - name: Test
+        run: ./gradlew desktopTest
+      - name: Upload HTML reports
+        uses: actions/upload-artifact@v2.3.1
+        if: always()
+        with:
+          name: desktopTest-${{ matrix.os }}-reports.zip
+          path: ./desktop/build/reports/tests/desktopTest
+      - name: Upload Unit Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Unit Test Results On ${{ matrix.os }})
+          path: ./desktop/build/test-results/**/*.xml
+
+  publish-test-results:
+    name: Publish Unit Tests Results
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          files: artifacts/**/*.xml
