@@ -33,7 +33,7 @@ jobs:
       - name: Test
         run: ./gradlew desktopTest
       - name: Upload HTML reports
-        uses: actions/upload-artifact@3
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: desktopTest-${{ matrix.os }}-reports.zip
