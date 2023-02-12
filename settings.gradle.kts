@@ -21,4 +21,4 @@ pluginManagement {
 
 rootProject.name = "KlipperX"
 
-include(":android", ":desktop", ":common")
+include(":targets:android", ":targets:desktop", ":app")

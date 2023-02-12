@@ -21,9 +21,9 @@ kotlin {
         summary = "KotlinX Compose Multiplatform Shared Module"
         homepage = "https://github.com/linroid/KlipperX"
         ios.deploymentTarget = "14.1"
-        podfile = project.file("../ios/Podfile")
+        podfile = project.file("../targets/ios/Podfile")
         framework {
-            baseName = "common"
+            baseName = "app"
             isStatic = true
         }
     }

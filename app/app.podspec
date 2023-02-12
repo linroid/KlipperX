@@ -1,24 +1,24 @@
 Pod::Spec.new do |spec|
-    spec.name                     = 'common'
+    spec.name                     = 'app'
     spec.version                  = '1.0-SNAPSHOT'
     spec.homepage                 = 'https://github.com/linroid/KlipperX'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
     spec.summary                  = 'KotlinX Compose Multiplatform Shared Module'
-    spec.vendored_frameworks      = 'build/cocoapods/framework/common.framework'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/app.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target = '14.1'
                 
                 
     spec.pod_target_xcconfig = {
-        'KOTLIN_PROJECT_PATH' => ':common',
-        'PRODUCT_MODULE_NAME' => 'common',
+        'KOTLIN_PROJECT_PATH' => ':app',
+        'PRODUCT_MODULE_NAME' => 'app',
     }
                 
     spec.script_phases = [
         {
-            :name => 'Build common',
+            :name => 'Build app',
             :execution_position => :before_compile,
             :shell_path => '/bin/sh',
             :script => <<-SCRIPT
