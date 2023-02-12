@@ -1,6 +1,5 @@
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.linroid.klipperx.common.App
 import java.awt.Frame
 
 fun main() = application {
@@ -14,6 +13,6 @@ fun main() = application {
             putClientProperty("apple.awt.fullWindowContent", true)
             putClientProperty("apple.awt.transparentTitleBar", true)
         }
-        App()
+        MainView()
     }
 }

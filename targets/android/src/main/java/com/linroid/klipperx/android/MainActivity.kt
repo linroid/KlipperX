@@ -1,6 +1,6 @@
 package com.linroid.klipperx.android
 
-import com.linroid.klipperx.common.App
+import MainView
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                App()
+                MainView()
             }
         }
     }
