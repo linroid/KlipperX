@@ -1,3 +1,3 @@
-package com.linroid.klipperx.common
+package com.linroid.klipperx
 
 expect fun getPlatformName(): String

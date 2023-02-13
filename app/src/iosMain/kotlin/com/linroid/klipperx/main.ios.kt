@@ -1,4 +1,4 @@
-package com.linroid.klipperx.common
+package com.linroid.klipperx
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp

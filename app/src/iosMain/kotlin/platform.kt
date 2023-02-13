@@ -1,4 +1,4 @@
-package com.linroid.klipperx.common
+package com.linroid.klipperx
 
 actual fun getPlatformName(): String {
     return "iOS"
