@@ -26,7 +26,7 @@ jobs:
       - name: Build
         run: ./gradlew package
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@3
+        uses: actions/upload-artifact@v3
         with:
           name: Klipper-${{ matrix.os }}-binaries
           path: ./desktop/build/compose/binaries/main
