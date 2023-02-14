@@ -29,32 +29,19 @@ kotlin {
             }
         }
 
-        val androidMain by getting {
-            dependencies {
-                api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.9.0")
-            }
-        }
-        val androidUnitTest by getting {
-            dependencies {
-                implementation("junit:junit:4.13.2")
-            }
-        }
-
-        val desktopMain by getting {
+        getByName("desktopMain") {
             dependencies {
                 api(compose.preview)
             }
         }
-        val desktopTest by getting
 
         val iosMain by getting { dependsOn(commonMain) }
         val iosTest by getting { dependsOn(commonTest) }
-        val iosX64Main by getting { dependsOn(iosMain) }
-        val iosX64Test by getting { dependsOn(iosTest) }
-        val iosArm64Main by getting { dependsOn(iosMain) }
-        val iosArm64Test by getting { dependsOn(iosTest) }
-        val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
-        val iosSimulatorArm64Test by getting { dependsOn(iosTest) }
+        getByName("iosX64Main") { dependsOn(iosMain) }
+        getByName("iosX64Test") { dependsOn(iosMain) }
+        getByName("iosArm64Main") { dependsOn(iosMain) }
+        getByName("iosArm64Test") { dependsOn(iosMain) }
+        getByName("iosSimulatorArm64Main") { dependsOn(iosMain) }
+        getByName("iosSimulatorArm64Test") { dependsOn(iosTest) }
     }
 }

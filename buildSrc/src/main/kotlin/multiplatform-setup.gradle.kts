@@ -24,29 +24,19 @@ kotlin {
             }
         }
 
-        val androidMain by getting {
-            dependencies {
-            }
-        }
-        val androidUnitTest by getting {
+        named("androidUnitTest") {
             dependencies {
                 implementation("junit:junit:4.13.2")
             }
         }
 
-        val desktopMain by getting {
-            dependencies {
-            }
-        }
-        val desktopTest by getting
-
         val iosMain by getting { dependsOn(commonMain) }
         val iosTest by getting { dependsOn(commonTest) }
-        val iosX64Main by getting { dependsOn(iosMain) }
-        val iosX64Test by getting { dependsOn(iosTest) }
-        val iosArm64Main by getting { dependsOn(iosMain) }
-        val iosArm64Test by getting { dependsOn(iosTest) }
-        val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
-        val iosSimulatorArm64Test by getting { dependsOn(iosTest) }
+        getByName("iosX64Main") { dependsOn(iosMain) }
+        getByName("iosX64Test") { dependsOn(iosMain) }
+        getByName("iosArm64Main") { dependsOn(iosMain) }
+        getByName("iosArm64Test") { dependsOn(iosMain) }
+        getByName("iosSimulatorArm64Main") { dependsOn(iosMain) }
+        getByName("iosSimulatorArm64Test") { dependsOn(iosTest) }
     }
 }
