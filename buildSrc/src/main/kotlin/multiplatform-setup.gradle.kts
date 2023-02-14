@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    id("android-setup")
     id("kotlin-multiplatform")
 }
 
