@@ -21,4 +21,9 @@ pluginManagement {
 
 rootProject.name = "KlipperX"
 
-include(":targets:android", ":targets:desktop", ":app")
+include(
+    ":moonraker",
+    ":app",
+    ":targets:android",
+    ":targets:desktop",
+)
