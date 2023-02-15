@@ -18,4 +18,12 @@ kotlin {
             isStatic = true
         }
     }
+
+    sourceSets {
+        getByName("commonMain") {
+            dependencies {
+                implementation(project(":moonraker"))
+            }
+        }
+    }
 }
