@@ -23,7 +23,7 @@ rootProject.name = "KlipperX"
 
 include(
     ":moonraker",
-    ":app",
+    ":main",
     ":targets:android",
     ":targets:desktop",
 )

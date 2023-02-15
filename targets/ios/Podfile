@@ -3,7 +3,7 @@ platform :ios, '14.1'
 
 target 'KlipperX' do
   use_frameworks!
-  pod 'app', :path => '../../app'
+  pod 'main', :path => '../../main'
 end
 
 post_install do |installer|

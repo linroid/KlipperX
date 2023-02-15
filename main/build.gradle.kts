@@ -14,7 +14,7 @@ kotlin {
         ios.deploymentTarget = "14.1"
         podfile = project.file("../targets/ios/Podfile")
         framework {
-            baseName = "app"
+            baseName = "main"
             isStatic = true
         }
     }
