@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Klipper-${{ matrix.os }}-binaries
-          path: ./desktop/build/compose/binaries/main
+          path: ./targets/desktop/build/compose/binaries/main
       - name: Test
         run: ./gradlew desktopTest
       - name: Upload HTML reports
@@ -37,13 +37,13 @@ jobs:
         if: always()
         with:
           name: desktopTest-${{ matrix.os }}-reports.zip
-          path: ./desktop/build/reports/tests/desktopTest
+          path: ./**/build/reports/tests/desktopTest
       - name: Upload Unit Test Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: Unit Test Results On ${{ matrix.os }})
-          path: ./desktop/build/test-results/**/*.xml
+          path: ./**/build/test-results/**/*.xml
 
   publish-test-results:
     name: Publish Unit Tests Results
