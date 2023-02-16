@@ -9,6 +9,7 @@ on:
       - .github/**
 jobs:
   test:
+    name: Run desktop unit test
     strategy:
       matrix:
         os: [macos, ubuntu, windows]
@@ -24,7 +25,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Test
-        run: ./gradlew desktopTest
+        run: ./gradlew cleanDesktopTest desktopTest
       - name: Upload HTML reports
         uses: actions/upload-artifact@v3
         if: always()
