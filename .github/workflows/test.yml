@@ -1,4 +1,4 @@
-name: CI
+name: Test
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - README.md
       - .github/**
 jobs:
-  build-and-test:
+  test:
     strategy:
       matrix:
         os: [macos, ubuntu, windows]
@@ -23,8 +23,6 @@ jobs:
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build
-        run: ./gradlew package
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -47,13 +45,13 @@ jobs:
 
   publish-test-results:
     name: Publish Unit Tests Results
-    needs: build-and-test
+    needs: test
     runs-on: ubuntu-latest
     if: always()
 
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: artifacts
 
