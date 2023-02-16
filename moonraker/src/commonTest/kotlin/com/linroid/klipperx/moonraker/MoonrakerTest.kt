@@ -6,7 +6,7 @@ import io.ktor.http.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class MoonrakerTest {
     @Test
@@ -18,7 +18,9 @@ class MoonrakerTest {
                 headers = headersOf(HttpHeaders.ContentType, "application/json")
             )
         })
-        assertEquals(moonraker.takeToken(), "token")
+        assertTrue {
+            moonraker.takeToken()
+        }
     }
 
     private fun moonrakerOf(engine: HttpClientEngine): Moonraker {

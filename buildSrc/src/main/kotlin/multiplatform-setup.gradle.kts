@@ -7,6 +7,13 @@ kotlin {
     android()
     jvm("desktop") {
         jvmToolchain(11)
+        testRuns["test"].executionTask.configure {
+            useJUnit()
+            reports {
+                junitXml.required.set(true)
+                html.required.set(true)
+            }
+        }
     }
     ios()
     iosX64()
@@ -29,6 +36,13 @@ kotlin {
             }
         }
 
+        named("desktopMain") {
+            dependencies {
+                implementation("org.slf4j:slf4j-api:1.7.30")
+                implementation("org.slf4j:slf4j-simple:1.7.30")
+            }
+        }
+
         named("androidUnitTest") {
             dependencies {
                 implementation("junit:junit:4.13.2")
@@ -43,5 +57,14 @@ kotlin {
         getByName("iosArm64Test") { dependsOn(iosMain) }
         getByName("iosSimulatorArm64Main") { dependsOn(iosMain) }
         getByName("iosSimulatorArm64Test") { dependsOn(iosTest) }
+    }
+}
+
+tasks {
+    withType<Test> {
+        testLogging {
+            outputs.upToDateWhen { false }
+            showStandardStreams = true
+        }
     }
 }

@@ -15,6 +15,7 @@ class Moonraker(
     private val port: Int,
     engine: HttpClientEngine = CIO.create(),
 ) {
+    private var token: String? = null
     private val client = HttpClient(engine) {
         expectSuccess = true
         install(WebSockets)
@@ -28,10 +29,10 @@ class Moonraker(
         }
     }
 
-    suspend fun takeToken(): String
-    {
+    suspend fun takeToken(): Boolean {
         val response = client.get("http://$host:$port/access/oneshot_token")
-        val token: MoonrakerResponse<String> = response.body()
-        return token.result
+        val body: MoonrakerResponse<String> = response.body()
+        token = body.result
+        return body.result.isNotEmpty()
     }
 }
