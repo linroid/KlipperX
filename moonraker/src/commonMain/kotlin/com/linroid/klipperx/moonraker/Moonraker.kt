@@ -1,8 +1,8 @@
 package com.linroid.klipperx.moonraker
 
-import com.linroid.klipperx.moonraker.model.MoonrakerResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.engine.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -13,8 +13,9 @@ import io.ktor.http.*
 class Moonraker(
     private val host: String,
     private val port: Int,
+    engine: HttpClientEngine = CIO.create(),
 ) {
-    private val client = HttpClient(CIO) {
+    private val client = HttpClient(engine) {
         expectSuccess = true
         install(WebSockets)
         install(ContentNegotiation) {

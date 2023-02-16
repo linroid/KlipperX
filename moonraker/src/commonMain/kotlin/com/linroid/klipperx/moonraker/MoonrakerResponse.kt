@@ -1,4 +1,4 @@
-package com.linroid.klipperx.moonraker.model
+package com.linroid.klipperx.moonraker
 
 import kotlinx.serialization.Serializable
 
