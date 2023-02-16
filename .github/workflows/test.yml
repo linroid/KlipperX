@@ -23,11 +23,6 @@ jobs:
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Klipper-${{ matrix.os }}-binaries
-          path: ./**/build/compose/binaries/main
       - name: Test
         run: ./gradlew desktopTest
       - name: Upload HTML reports
