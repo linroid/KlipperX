@@ -9,11 +9,18 @@ on:
       - .github/**
 jobs:
   test:
-    name: Run desktop unit test
+    name: Run Desktop Unit Test
     strategy:
       matrix:
-        os: [macos, ubuntu, windows]
-    runs-on: ${{ matrix.os }}-latest
+        platform: [linux, windows, macos]
+        include:
+          - platform: linux
+            os: ubuntu-latest
+          - platform: windows
+            os: windows-latest
+          - platform: macos
+            os: macos-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
@@ -30,13 +37,13 @@ jobs:
         uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: desktopTest-${{ matrix.os }}-reports.zip
+          name: desktopTest-${{ matrix.platform }}-reports.zip
           path: ./**/build/reports/tests/desktopTest
       - name: Upload Unit Test Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: Unit Test Results On ${{ matrix.os }})
+          name: Unit Test Results On ${{ matrix.platform }})
           path: ./**/build/test-results/**/*.xml
 
   publish-test-results:
