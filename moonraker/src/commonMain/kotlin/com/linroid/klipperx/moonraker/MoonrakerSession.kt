@@ -12,14 +12,11 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.*
 import io.ktor.websocket.*
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.decodeFromString
@@ -53,20 +50,31 @@ suspend fun connectMoonrakerSession(
         HttpResponseValidator {
         }
     }
-    val response = client.get("http://$host:$port/access/oneshot_token")
-    val body: MoonrakerResponse<String> = response.body()
-    val token = body.result
-    check(token.isNotEmpty())
-    val session = client.webSocketSession(
-        method = HttpMethod.Get,
-        host = host,
-        port = port,
-        path = "/websocket"
-    )
-    return MoonrakerSession(session, token)
+    val token = try {
+        val response = client.get("http://$host:$port/access/oneshot_token")
+        val body: MoonrakerResponse<String> = response.body()
+        body.result
+    } catch (error: Exception) {
+        client.close()
+        throw error
+    }
+    val session = try {
+        check(token.isNotEmpty())
+        client.webSocketSession(
+            method = HttpMethod.Get,
+            host = host,
+            port = port,
+            path = "/websocket"
+        )
+    } catch (error: Exception) {
+        client.close()
+        throw error
+    }
+    return MoonrakerSession(client, session, token)
 }
 
 class MoonrakerSession(
+    private val client: HttpClient,
     private val websocket: WebSocketSession,
     private val token: String,
     private val json: Json = Json
@@ -87,10 +95,13 @@ class MoonrakerSession(
     }
 
     fun stop() {
+        receiveScope.cancel()
         receiveDispatcher.close()
+        sendScope.cancel()
         sendDispatcher.close()
         queue.close()
         requests.clear()
+        client.close()
     }
 
     private fun startSend() {
