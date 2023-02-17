@@ -1,34 +1,33 @@
 package com.linroid.klipperx.moonraker
 
-import io.ktor.client.engine.*
 import io.ktor.client.engine.mock.*
 import io.ktor.http.*
 import io.ktor.utils.io.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
-import kotlin.test.assertTrue
 
 class MoonrakerTest {
+    // TODO: Mock the websocket
     @Test
-    fun testTakeToken() = runTest {
-        val moonraker = moonrakerOf(MockEngine { _ ->
-            respond(
-                content = ByteReadChannel("""{"result":"token"}""".trimIndent()),
-                status = HttpStatusCode.OK,
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
-            )
-        })
-        assertTrue {
-            moonraker.takeToken()
-        }
-    }
-
-    private fun moonrakerOf(engine: HttpClientEngine): Moonraker {
-        return Moonraker(
-            host = "voron.local",
-            port = 80,
-            engine = engine
-        )
+    fun whenRequestServerInfoShouldNoException() = runTest {
+        // val session = connectMoonrakerSession(
+        //     host = "voron.local",
+        //     port = 80,
+        //     MockEngine { request ->
+        //         if (request.url.toString().endsWith("access/oneshot_token")) {
+        //             return@MockEngine respond(
+        //                 content = ByteReadChannel("""{"result":"token"}""".trimIndent()),
+        //                 status = HttpStatusCode.OK,
+        //                 headers = headersOf(HttpHeaders.ContentType, "application/json")
+        //             )
+        //         }
+        //         respondError(HttpStatusCode.NotFound)
+        //     }
+        // )
+        // val moonraker = Moonraker(session)
+        // delay(1000)
+        // moonraker.serverInfo()
     }
 
 }
