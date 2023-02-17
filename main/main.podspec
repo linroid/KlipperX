@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
     spec.summary                  = 'KotlinX Compose Multiplatform Shared Module'
     spec.vendored_frameworks      = 'build/cocoapods/framework/main.framework'
     spec.libraries                = 'c++'
-    spec.ios.deployment_target = '14.1'
+    spec.ios.deployment_target = '15.2'
                 
                 
     spec.pod_target_xcconfig = {

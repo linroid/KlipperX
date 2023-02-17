@@ -52,9 +52,9 @@ kotlin {
         val iosMain by getting { dependsOn(commonMain) }
         val iosTest by getting { dependsOn(commonTest) }
         getByName("iosX64Main") { dependsOn(iosMain) }
-        getByName("iosX64Test") { dependsOn(iosMain) }
+        getByName("iosX64Test") { dependsOn(iosTest) }
         getByName("iosArm64Main") { dependsOn(iosMain) }
-        getByName("iosArm64Test") { dependsOn(iosMain) }
+        getByName("iosArm64Test") { dependsOn(iosTest) }
         getByName("iosSimulatorArm64Main") { dependsOn(iosMain) }
         getByName("iosSimulatorArm64Test") { dependsOn(iosTest) }
     }
