@@ -48,13 +48,13 @@ jobs:
         uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: ${{ matrix.platform }}-reports.zip
+          name: ${{ matrix.platform }}-results-html.zip
           path: ./**/build/reports/tests
       - name: Upload XML Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.platform }})-unit-test-results.zip
+          name: ${{ matrix.platform }}-results-xml.zip
           path: ./**/build/test-results/**/*.xml
 
   publish-test-results:
