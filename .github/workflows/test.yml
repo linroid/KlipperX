@@ -9,10 +9,10 @@ on:
       - .github/**
 jobs:
   test:
-    name: Run Desktop Unit Test
+    name: Unit Test
     strategy:
       matrix:
-        platform: [linux, windows, macos, android]
+        platform: [linux, windows, macos, android, ios]
         include:
           - platform: linux
             os: ubuntu-latest
@@ -22,6 +22,8 @@ jobs:
             os: macos-latest
           - platform: android
             os: ubuntu-latest
+          - platform: ios
+            os: macos-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -35,10 +37,13 @@ jobs:
         run: chmod +x gradlew
       - name: Desktop Unit Test
         run: ./gradlew cleanDesktopTest desktopTest
-        if: ${{ matrix.platform != 'android' }}
+        if: ${{ matrix.platform == 'linux' || matrix.platform == 'windows' || matrix.platform == 'macos' }}
       - name: Android Unit Test
         run: ./gradlew cleanTestDebugUnitTest testDebugUnitTest
         if: ${{ matrix.platform == 'android' }}
+      - name: iOS Unit Test
+        run: ./gradlew cleanIosSimulatorArm64Test iosSimulatorArm64Test
+        if: ${{ matrix.platform == 'ios' }}
       - name: Upload HTML reports
         uses: actions/upload-artifact@v3
         if: always()

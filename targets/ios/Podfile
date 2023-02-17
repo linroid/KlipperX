@@ -1,5 +1,5 @@
 source 'https://cdn.cocoapods.org'
-platform :ios, '14.1'
+platform :ios, '15.2'
 
 target 'KlipperX' do
   use_frameworks!
