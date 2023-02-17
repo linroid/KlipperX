@@ -12,7 +12,7 @@ jobs:
     name: Run Desktop Unit Test
     strategy:
       matrix:
-        platform: [linux, windows, macos]
+        platform: [linux, windows, macos, android]
         include:
           - platform: linux
             os: ubuntu-latest
@@ -20,6 +20,8 @@ jobs:
             os: windows-latest
           - platform: macos
             os: macos-latest
+          - platform: android
+            os: ubuntu-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -31,19 +33,23 @@ jobs:
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Test
+      - name: Desktop Unit Test
         run: ./gradlew cleanDesktopTest desktopTest
+        if: ${{ matrix.platform != 'android' }}
+      - name: Android Unit Test
+        run: ./gradlew cleanTestDebugUnitTest testDebugUnitTest
+        if: ${{ matrix.platform == 'android' }}
       - name: Upload HTML reports
         uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: desktopTest-${{ matrix.platform }}-reports.zip
-          path: ./**/build/reports/tests/desktopTest
-      - name: Upload Unit Test Results
+          name: ${{ matrix.platform }}-reports.zip
+          path: ./**/build/reports/tests
+      - name: Upload XML Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: Unit Test Results On ${{ matrix.platform }})
+          name: ${{ matrix.platform }})-unit-test-results.zip
           path: ./**/build/test-results/**/*.xml
 
   publish-test-results:
@@ -61,4 +67,4 @@ jobs:
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:
-          files: artifacts/**/*com.linroid.klipperx*.xml
+          files: artifacts/**/Test-.xml
