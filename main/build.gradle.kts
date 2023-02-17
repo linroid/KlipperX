@@ -27,3 +27,7 @@ kotlin {
         }
     }
 }
+
+android {
+    namespace = "com.linroid.klipperx.main"
+}

@@ -18,8 +18,11 @@ dependencies {
 
 android {
     compileSdk = 33
+
+    namespace = "com.linroid.klipperx"
+
     defaultConfig {
-        applicationId = "com.linroid.klipperx.android"
+        applicationId = "com.linroid.klipperx"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

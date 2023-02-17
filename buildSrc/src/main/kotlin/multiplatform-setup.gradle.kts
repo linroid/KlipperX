@@ -64,7 +64,7 @@ tasks {
     withType<Test> {
         testLogging {
             outputs.upToDateWhen { false }
-            showStandardStreams = true
+            // showStandardStreams = true
         }
     }
 }

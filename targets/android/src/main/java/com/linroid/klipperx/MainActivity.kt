@@ -1,4 +1,4 @@
-package com.linroid.klipperx.android
+package com.linroid.klipperx
 
 import MainView
 import android.os.Bundle
