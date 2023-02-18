@@ -1,4 +1,4 @@
-//
+// 
 //  AvoidDispose.swift
 //
 //  Copy from https://github.com/cl3m/multiplatform-compose/blob/develop/iosApp/iosApp/AvoidDispose.swift
@@ -8,7 +8,7 @@
 //
 
 import UIKit
-import app
+import main
 
 // ComposeWindow is disposed on viewDidDisappear so but it inside a container view:
 // https://github.com/JetBrains/androidx/blob/jb-main/compose/ui/ui/src/uikitMain/kotlin/androidx/compose/ui/window/ComposeWindow.uikit.kt
