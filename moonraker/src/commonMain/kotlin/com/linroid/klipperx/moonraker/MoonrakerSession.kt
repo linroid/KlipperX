@@ -28,19 +28,15 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
-suspend fun connectMoonrakerSession(
-    host: String,
-    port: Int,
-    engine: HttpClientEngine = CIO.create(),
-): MoonrakerSession {
-    val client = HttpClient(engine) {
+private fun createMoonrakerClient(engine: HttpClientEngine): HttpClient {
+    return HttpClient(engine) {
         expectSuccess = true
         install(WebSockets) {
             contentConverter = KotlinxWebsocketSerializationConverter(Json)
         }
-        install(Logging) {
-            level = LogLevel.ALL
-        }
+        // install(Logging) {
+        //     level = LogLevel.ALL
+        // }
         install(ContentNegotiation) {
             register(
                 ContentType.Application.Json,
@@ -50,6 +46,32 @@ suspend fun connectMoonrakerSession(
         HttpResponseValidator {
         }
     }
+}
+
+fun pingMoonraker(host: String, timeout: Long): Boolean {
+    val client = createMoonrakerClient(CIO.create())
+    return try {
+        runBlocking {
+            withTimeout(timeout) {
+                val response = client.get("http://$host/access/oneshot_token")
+                val body: MoonrakerResponse<String> = response.body()
+                check(body.result.isNotEmpty())
+            }
+        }
+        true
+    } catch (error: Exception) {
+        false
+    } finally {
+        client.close()
+    }
+}
+
+suspend fun connectMoonrakerSession(
+    host: String,
+    port: Int,
+    engine: HttpClientEngine = CIO.create(),
+): MoonrakerSession {
+    val client = createMoonrakerClient(engine)
     val token = try {
         val response = client.get("http://$host:$port/access/oneshot_token")
         val body: MoonrakerResponse<String> = response.body()
@@ -94,7 +116,7 @@ class MoonrakerSession(
         startSend()
     }
 
-    fun stop() {
+    fun dispose() {
         receiveScope.cancel()
         receiveDispatcher.close()
         sendScope.cancel()

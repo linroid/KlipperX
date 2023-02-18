@@ -26,6 +26,8 @@ kotlin {
     sourceSets {
         all {
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
+            languageSettings.optIn("androidx.compose.foundation.ExperimentalFoundationApi")
         }
 
         val commonMain by getting {
@@ -43,6 +45,13 @@ kotlin {
             dependencies {
                 implementation("org.slf4j:slf4j-api:1.7.30")
                 implementation("org.slf4j:slf4j-simple:1.7.30")
+            }
+        }
+
+        named("androidMain") {
+            dependencies {
+                implementation("androidx.core:core:1.9.0")
+                implementation("androidx.core:core-ktx:1.9.0")
             }
         }
 
