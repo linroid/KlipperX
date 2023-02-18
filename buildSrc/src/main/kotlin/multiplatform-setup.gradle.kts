@@ -2,7 +2,6 @@ plugins {
     id("android-setup")
     id("kotlin-multiplatform")
 }
-
 kotlin {
     android()
     jvm("desktop") {
@@ -15,10 +14,14 @@ kotlin {
             }
         }
     }
-    ios()
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    // Only config ios on macos system or we will get errors when building on aarch64 linux
+    // see https://youtrack.jetbrains.com/issue/KT-36871
+    if (isOnMacOs) {
+        ios()
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
+    }
 
     sourceSets {
         all {
@@ -49,14 +52,16 @@ kotlin {
             }
         }
 
-        val iosMain by getting { dependsOn(commonMain) }
-        val iosTest by getting { dependsOn(commonTest) }
-        getByName("iosX64Main") { dependsOn(iosMain) }
-        getByName("iosX64Test") { dependsOn(iosTest) }
-        getByName("iosArm64Main") { dependsOn(iosMain) }
-        getByName("iosArm64Test") { dependsOn(iosTest) }
-        getByName("iosSimulatorArm64Main") { dependsOn(iosMain) }
-        getByName("iosSimulatorArm64Test") { dependsOn(iosTest) }
+        if (isOnMacOs) {
+            val iosMain by getting { dependsOn(commonMain) }
+            val iosTest by getting { dependsOn(commonTest) }
+            getByName("iosX64Main") { dependsOn(iosMain) }
+            getByName("iosX64Test") { dependsOn(iosTest) }
+            getByName("iosArm64Main") { dependsOn(iosMain) }
+            getByName("iosArm64Test") { dependsOn(iosTest) }
+            getByName("iosSimulatorArm64Main") { dependsOn(iosMain) }
+            getByName("iosSimulatorArm64Test") { dependsOn(iosTest) }
+        }
     }
 }
 
