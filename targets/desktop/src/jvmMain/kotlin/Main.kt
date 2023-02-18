@@ -2,14 +2,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowState
+import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 
 fun main(vararg arguments: String) = application {
-    val undecorated = arguments.isNotEmpty() && arguments[0] == "f"
+    val fullscreen = arguments.isNotEmpty() && arguments[0] == "f"
+    val windowState = rememberWindowState(
+        width = 800.dp,
+        height = 600.dp,
+        placement = if (fullscreen) WindowPlacement.Fullscreen else WindowPlacement.Floating
+    )
     Window(
-        state = WindowState(width = 800.dp, height = 600.dp),
-        undecorated = undecorated,
+        state = windowState,
+        undecorated = fullscreen,
         onCloseRequest = ::exitApplication,
         title = "KlipperX"
     ) {
