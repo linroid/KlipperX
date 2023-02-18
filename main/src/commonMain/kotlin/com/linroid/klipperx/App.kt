@@ -12,10 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.linroid.klipperx.moonraker.MoonrakerDiscover
 import com.linroid.klipperx.moonraker.MoonrakerInstance
+import com.linroid.klipperx.moonraker.getHostNameByIp
 import com.linroid.klipperx.theme.AppTheme
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
 
 internal val darkModeState = mutableStateOf(false)
 internal val safeAreaState = mutableStateOf(PaddingValues())
@@ -33,9 +32,7 @@ internal fun App(modifier: Modifier = Modifier) {
             val discover = MoonrakerDiscover()
             if (discover.isAvailable()) {
                 coroutineScope.launch {
-                    discover.search().collect { host ->
-                        instances.add(MoonrakerInstance(host, 80, host))
-                    }
+                    discover.search().collect(instances::add)
                     hasFinishedDiscovering = true
                 }
             }

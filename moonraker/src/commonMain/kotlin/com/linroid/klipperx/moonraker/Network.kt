@@ -19,3 +19,5 @@ internal fun Int.toHostAddress(): String {
     }
     return builder.toString()
 }
+
+expect fun getHostNameByIp(ip: String): String

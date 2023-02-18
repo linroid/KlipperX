@@ -35,3 +35,7 @@ actual fun getScannableNetworks(): List<ScannableNetwork> {
         }
     return results
 }
+
+actual fun getHostNameByIp(ip: String): String {
+    return InetAddress.getByName(ip)?.hostName ?: ip
+}

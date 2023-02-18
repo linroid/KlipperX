@@ -12,9 +12,7 @@ class MoonrakerDiscover(
     private val timeout: Long = 500,
     workerCount: Int = 10
 ) {
-
     private val networks = getScannableNetworks()
-
     private val dispatchers = newFixedThreadPoolContext(workerCount, "mooonraker-discover")
     private val coroutineScope = CoroutineScope(dispatchers)
 
@@ -35,26 +33,23 @@ class MoonrakerDiscover(
         return networks.isNotEmpty()
     }
 
-    fun search(): Flow<String> = channelFlow {
+    fun search(): Flow<MoonrakerInstance> = channelFlow {
         hosts.map { pingHost(it, this) }
             .toList()
             .awaitAll()
         close()
     }
 
-    private fun pingHost(host: String, scope: ProducerScope<String>): Deferred<String?> {
+    private fun pingHost(host: String, scope: ProducerScope<MoonrakerInstance>): Deferred<Unit> {
         return coroutineScope.async {
             try {
-                val succeed = measureTimedValue {
-                    pingMoonraker(host, timeout)
+                val succeed = pingMoonraker(host, timeout)
+                if (succeed) {
+                    scope.send(MoonrakerInstance(host, 80, getHostNameByIp(host)))
                 }
-                if (succeed.value) {
-                    scope.send(host)
-                    return@async host
-                }
-                return@async null
+                return@async
             } catch (error: Exception) {
-                return@async null
+                return@async
             }
         }
     }
