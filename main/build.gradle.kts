@@ -20,7 +20,7 @@ kotlin {
     }
 
     sourceSets {
-        getByName("commonMain") {
+        named("commonMain") {
             dependencies {
                 implementation(project(":moonraker"))
             }
