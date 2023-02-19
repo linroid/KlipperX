@@ -17,8 +17,3 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${props["kotlin.version"] as String}")
     implementation("com.android.tools.build:gradle:${props["agp.version"] as String}")
 }
-
-kotlin {
-    // Add Deps to compilation, so it will become available in main project
-    sourceSets.getByName("main").kotlin.srcDir("buildSrc/src/main/kotlin")
-}
