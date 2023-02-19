@@ -39,20 +39,6 @@ kotlin {
             }
         }
 
-        named("desktopMain") {
-            dependencies {
-                implementation("org.slf4j:slf4j-api:1.7.30")
-                implementation("org.slf4j:slf4j-simple:1.7.30")
-            }
-        }
-
-        named("androidMain") {
-            dependencies {
-                implementation("androidx.core:core:1.9.0")
-                implementation("androidx.core:core-ktx:1.9.0")
-            }
-        }
-
         named("androidUnitTest") {
             dependencies {
                 implementation("junit:junit:4.13.2")

@@ -1,6 +1,6 @@
 plugins {
     id("multiplatform-setup")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -8,22 +8,21 @@ kotlin {
         all {
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
         }
-        val ktorVersion = "2.2.3"
         named("commonMain") {
             dependencies {
-                api("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-cio:$ktorVersion")
-                implementation("io.ktor:ktor-client-websockets:$ktorVersion")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-                implementation("io.ktor:ktor-server-data-conversion:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+                implementation(project(":foundation"))
+                implementation(libs.bundles.ktor)
             }
         }
         named("commonTest") {
             dependencies {
-                implementation("io.ktor:ktor-client-mock:$ktorVersion")
+                implementation(libs.ktor.mock)
+            }
+        }
+        named("desktopMain") {
+            dependencies {
+                implementation("org.slf4j:slf4j-api:1.7.36")
+                implementation("org.slf4j:slf4j-simple:1.7.36")
             }
         }
     }

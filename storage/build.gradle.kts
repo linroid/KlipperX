@@ -1,6 +1,6 @@
 plugins {
     id("multiplatform-setup")
-    id("app.cash.sqldelight")
+    alias(libs.plugins.sqldelight)
 }
 
 group = "com.linroid.klipperx"
@@ -19,22 +19,22 @@ kotlin {
         named("commonMain") {
             dependencies {
                 implementation(project(":foundation"))
-                api("com.russhwolf:multiplatform-settings:1.0.0")
+                api(libs.settings)
             }
         }
         named("androidMain") {
             dependencies {
-                implementation("app.cash.sqldelight:android-driver:2.0.0-alpha05")
+                implementation("app.cash.sqldelight:android-driver:${libs.versions.sqldelight.get()}")
             }
         }
         named("iosMain") {
             dependencies {
-                implementation("app.cash.sqldelight:native-driver:2.0.0-alpha05")
+                implementation("app.cash.sqldelight:native-driver:${libs.versions.sqldelight.get()}")
             }
         }
         named("desktopMain") {
             dependencies {
-                implementation("app.cash.sqldelight:sqlite-driver:2.0.0-alpha05")
+                implementation("app.cash.sqldelight:sqlite-driver:${libs.versions.sqldelight.get()}")
             }
         }
     }
