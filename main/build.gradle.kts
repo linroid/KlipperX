@@ -14,6 +14,7 @@ kotlin {
             homepage = "https://github.com/linroid/KlipperX"
             ios.deploymentTarget = "15.2"
             podfile = project.file("../targets/ios/Podfile")
+            useLibraries()
             framework {
                 baseName = "main"
                 isStatic = true

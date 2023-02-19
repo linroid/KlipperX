@@ -13,6 +13,7 @@ sqldelight {
             packageName.set("com.linroid.klipperx.storage.db")
         }
     }
+    linkSqlite.set(true)
 }
 
 kotlin {
