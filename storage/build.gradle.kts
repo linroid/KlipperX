@@ -27,9 +27,11 @@ kotlin {
                 implementation("app.cash.sqldelight:android-driver:${libs.versions.sqldelight.get()}")
             }
         }
-        named("iosMain") {
-            dependencies {
-                implementation("app.cash.sqldelight:native-driver:${libs.versions.sqldelight.get()}")
+        if (isOnMacOs) {
+            named("iosMain") {
+                dependencies {
+                    implementation("app.cash.sqldelight:native-driver:${libs.versions.sqldelight.get()}")
+                }
             }
         }
         named("desktopMain") {
