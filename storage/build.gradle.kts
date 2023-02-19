@@ -9,7 +9,7 @@ version = "1.0.0-SNAPSHOT"
 sqldelight {
     databases {
         create("Database") {
-            packageName.set("com.linroid.klipperx.db")
+            packageName.set("com.linroid.klipperx.storage.db")
         }
     }
 }
@@ -19,6 +19,7 @@ kotlin {
         named("commonMain") {
             dependencies {
                 implementation(project(":foundation"))
+                api("com.russhwolf:multiplatform-settings:1.0.0")
             }
         }
         named("androidMain") {

@@ -22,6 +22,9 @@ kotlin {
     }
 
     sourceSets {
+        all {
+            languageSettings.optIn("androidx.compose.foundation.ExperimentalFoundationApi")
+        }
         named("commonMain") {
             dependencies {
                 implementation(project(":storage"))

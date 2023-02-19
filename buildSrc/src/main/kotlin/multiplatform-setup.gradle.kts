@@ -25,9 +25,7 @@ kotlin {
 
     sourceSets {
         all {
-            languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
             languageSettings.optIn("kotlin.time.ExperimentalTime")
-            languageSettings.optIn("androidx.compose.foundation.ExperimentalFoundationApi")
         }
 
         val commonMain by getting {

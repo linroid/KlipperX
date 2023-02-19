@@ -5,6 +5,9 @@ plugins {
 
 kotlin {
     sourceSets {
+        all {
+            languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+        }
         val ktorVersion = "2.2.3"
         named("commonMain") {
             dependencies {
