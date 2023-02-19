@@ -25,3 +25,7 @@ kotlin {
         }
     }
 }
+
+android {
+    namespace = "${group}.foundation"
+}

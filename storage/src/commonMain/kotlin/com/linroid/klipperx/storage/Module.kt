@@ -1,6 +1,6 @@
 package com.linroid.klipperx.storage
 
-import com.linroid.klipperx.db.Database
+import com.linroid.klipperx.storage.db.Database
 import org.koin.dsl.module
 
 fun storageModule() {

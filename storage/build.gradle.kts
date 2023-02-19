@@ -39,3 +39,7 @@ kotlin {
         }
     }
 }
+
+android {
+    namespace = "${group}.storage"
+}

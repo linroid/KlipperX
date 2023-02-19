@@ -27,3 +27,7 @@ kotlin {
         }
     }
 }
+
+android {
+    namespace = "${group}.moonraker"
+}
