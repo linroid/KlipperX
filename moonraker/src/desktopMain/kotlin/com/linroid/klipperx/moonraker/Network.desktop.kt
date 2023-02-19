@@ -16,7 +16,8 @@ private fun InetAddress.toIntAddress(): Int {
 
 actual fun getScannableNetworks(): List<ScannableNetwork> {
     val results = mutableListOf<ScannableNetwork>()
-    NetworkInterface.getNetworkInterfaces()
+    val interfaces = NetworkInterface.getNetworkInterfaces() ?: return results
+    interfaces
         .asSequence()
         .forEach { ni ->
             val address = ni.interfaceAddresses
