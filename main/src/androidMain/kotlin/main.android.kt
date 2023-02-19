@@ -4,3 +4,4 @@ import androidx.compose.ui.Modifier
 import com.linroid.klipperx.App
 
 @Composable fun MainView() = App(Modifier.fillMaxSize())
+

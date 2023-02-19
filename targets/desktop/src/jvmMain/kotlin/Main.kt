@@ -5,8 +5,10 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.linroid.klipperx.setupKoin
 
 fun main(vararg arguments: String) = application {
+    setupKoin()
     val fullscreen = arguments.isNotEmpty() && arguments[0] == "f"
     val windowState = rememberWindowState(
         width = 800.dp,

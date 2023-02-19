@@ -27,8 +27,16 @@ kotlin {
         }
         named("commonMain") {
             dependencies {
+                implementation(project(":foundation"))
                 implementation(project(":storage"))
                 implementation(project(":moonraker"))
+            }
+        }
+        if (isOnMacOs) {
+            named("iosMain") {
+                dependencies {
+                    implementation("app.cash.sqldelight:native-driver:${libs.versions.sqldelight.get()}")
+                }
             }
         }
     }

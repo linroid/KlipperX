@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        KoinKt.setupKoin()
         let controller = AvoidDispose(Main_iosKt.mainViewController())
         controller.view.backgroundColor = .white
         let window = UIWindow(frame: UIScreen.main.bounds)

@@ -1,5 +1,6 @@
 plugins {
     id("multiplatform-setup")
+    kotlin("native.cocoapods")
     alias(libs.plugins.sqldelight)
 }
 

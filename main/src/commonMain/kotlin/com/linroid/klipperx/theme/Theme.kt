@@ -155,7 +155,7 @@ private val typography = Typography(
 )
 
 @Composable
-fun AppTheme(
+internal fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     colorPallet: ColorPallet = ColorPallet.GREEN,
     content: @Composable () -> Unit,

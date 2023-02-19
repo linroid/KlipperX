@@ -14,7 +14,6 @@ repositories {
 dependencies {
     implementation(project(":main"))
     implementation("androidx.activity:activity-compose:1.6.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
 }
 
 android {
