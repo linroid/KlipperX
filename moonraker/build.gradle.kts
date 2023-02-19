@@ -7,6 +7,7 @@ kotlin {
     sourceSets {
         all {
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            languageSettings.optIn("kotlinx.coroutines.DelicateCoroutinesApi")
         }
         named("commonMain") {
             dependencies {
