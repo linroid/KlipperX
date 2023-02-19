@@ -9,11 +9,8 @@ repositories {
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
-val props = Properties()
-file("../gradle.properties").reader().use { props.load(it) }
-
 dependencies {
-    implementation("org.jetbrains.compose:compose-gradle-plugin:${props["compose.version"] as String}")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${props["kotlin.version"] as String}")
-    implementation("com.android.tools.build:gradle:${props["agp.version"] as String}")
+    implementation("org.jetbrains.compose:compose-gradle-plugin:${libs.versions.compose.get()}")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin.get()}")
+    implementation("com.android.tools.build:gradle:${libs.versions.agp.get()}")
 }
