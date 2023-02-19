@@ -24,7 +24,7 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
-                implementation(project(":foundation"))
+                implementation(project(":storage"))
                 implementation(project(":moonraker"))
             }
         }

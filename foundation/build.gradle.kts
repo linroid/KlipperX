@@ -16,19 +16,17 @@ sqldelight {
 
 kotlin {
     sourceSets {
-        named("androidMain") {
+        val koinVersion = "3.3.3"
+        named("commonMain") {
             dependencies {
-                implementation("app.cash.sqldelight:android-driver:2.0.0-alpha05")
+                api("io.insert-koin:koin-core:$koinVersion")
             }
         }
-        named("iosMain") {
+        named("commonTest") {
             dependencies {
-                implementation("app.cash.sqldelight:native-driver:2.0.0-alpha05")
-            }
-        }
-        named("desktopMain") {
-            dependencies {
-                implementation("app.cash.sqldelight:sqlite-driver:2.0.0-alpha05")
+                api("io.insert-koin:koin-test:$koinVersion")
+                api("io.insert-koin:koin-test-junit4:$koinVersion")
+                api("io.insert-koin:koin-test-junit5:$koinVersion")
             }
         }
     }
