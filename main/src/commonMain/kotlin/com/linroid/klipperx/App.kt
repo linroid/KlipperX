@@ -50,29 +50,23 @@ internal fun App(modifier: Modifier = Modifier) {
                         "Welcome to KlipperX",
                         style = typography.h4,
                     )
-                    Spacer(Modifier.height(8.dp))
-                    if (hasFinishedDiscovering) {
-                        Text(
-                            "Founded printers",
-                            style = typography.subtitle2,
-                        )
-                    } else {
+                    Spacer(Modifier.size(32.dp))
+                    if (instances.isEmpty()) {
+                        CircularProgressIndicator(Modifier.size(32.dp))
+                        Spacer(Modifier.size(8.dp))
                         Text(
                             "Searching printer ...",
                             style = typography.subtitle2,
                         )
-                        Spacer(Modifier.size(16.dp))
-                        CircularProgressIndicator()
                     }
-                    Spacer(Modifier.size(16.dp))
-                    LazyColumn {
+                    LazyColumn(Modifier.sizeIn(maxHeight = 300.dp)) {
                         items(instances) {
                             Card(
                                 Modifier
                                     .defaultMinSize(minWidth = 250.dp, minHeight = 64.dp)
                                     .animateItemPlacement()
                                     .clickable { },
-                                backgroundColor = MaterialTheme.colors.primary.copy(alpha = 0.4f),
+                                backgroundColor = MaterialTheme.colors.secondary.copy(alpha = 0.4f),
                                 elevation = 0.dp
                             ) {
                                 if (it.name == it.host) {
@@ -80,14 +74,21 @@ internal fun App(modifier: Modifier = Modifier) {
                                         Text(
                                             it.getDisplayName(),
                                             style = typography.h6,
+                                            color = MaterialTheme.colors.onSecondary,
                                             modifier = Modifier.align(Alignment.CenterStart)
                                         )
                                     }
                                 } else {
                                     Column(Modifier.padding(8.dp)) {
-                                        Text(it.name, style = typography.h6)
+                                        Text(
+                                            it.name, style = typography.h6,
+                                            color = MaterialTheme.colors.onSecondary,
+                                        )
                                         Spacer(Modifier.height(4.dp))
-                                        Text(it.getDisplayName(), style = typography.body1)
+                                        Text(
+                                            it.getDisplayName(), style = typography.body1,
+                                            color = MaterialTheme.colors.onSecondary,
+                                        )
                                     }
 
                                 }
@@ -95,8 +96,28 @@ internal fun App(modifier: Modifier = Modifier) {
                             Spacer(Modifier.height(8.dp))
                         }
                     }
-                    Button({}) {
-                        Text("Manually Add")
+                    Spacer(Modifier.height(8.dp))
+
+                    if (instances.size > 0) {
+                        Button(
+                            modifier = Modifier.sizeIn(minWidth = 120.dp),
+                            onClick = {}
+                        ) {
+                            Text("Add all")
+                        }
+                    }
+                }
+                if (instances.size > 0 && !hasFinishedDiscovering) {
+                    Row(
+                        Modifier.align(Alignment.BottomEnd).padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(Modifier.size(32.dp))
+                        Spacer(Modifier.size(8.dp))
+                        Text(
+                            "Searching printer ...",
+                            style = typography.subtitle2,
+                        )
                     }
                 }
             }
