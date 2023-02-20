@@ -23,12 +23,17 @@ actual fun getScannableNetworks(): List<ScannableNetwork> {
             val address = ni.interfaceAddresses
                 .find { it.address is Inet4Address && it.address.isSiteLocalAddress }
             if (address != null) {
-                address.broadcast.address
+                val addressValue = address.address.toIntAddress()
+                val broadcastValue = if (address.broadcast != null) {
+                    address.address.toIntAddress()
+                } else {
+                    addressValue or ((1 shl (32 - address.networkPrefixLength))-1)
+                }
                 results.add(
                     ScannableNetwork(
                         name = ni.displayName,
-                        address = address.address.toIntAddress(),
-                        broadcast = address.broadcast.toIntAddress(),
+                        address = addressValue,
+                        broadcast = broadcastValue,
                         maskLength = address.networkPrefixLength
                     )
                 )
