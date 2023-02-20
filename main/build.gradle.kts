@@ -10,8 +10,11 @@ version = "1.0-SNAPSHOT"
 kotlin {
     if (isOnMacOs) {
         cocoapods {
-            summary = "KotlinX Compose Multiplatform Shared Module"
+            summary = "The main entry module for KlipperX"
             homepage = "https://github.com/linroid/KlipperX"
+            source = "https://github.com/linroid/KlipperX"
+            authors = "linroid"
+            license = "Apache License 2.0"
             ios.deploymentTarget = "15.2"
             podfile = project.file("../targets/ios/Podfile")
             useLibraries()
