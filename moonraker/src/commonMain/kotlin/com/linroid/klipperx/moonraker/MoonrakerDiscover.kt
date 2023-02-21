@@ -1,5 +1,6 @@
 package com.linroid.klipperx.moonraker
 
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.*
@@ -41,6 +42,7 @@ class MoonrakerDiscover(
         return coroutineScope.async {
             try {
                 val succeed = pingMoonraker(host, timeout)
+                Napier.v("ping $host: $succeed")
                 if (succeed) {
                     scope.send(MoonrakerInstance(host, 80, getHostNameByIp(host)))
                 }

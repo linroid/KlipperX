@@ -4,16 +4,14 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
-import android.util.Log
 import androidx.core.content.ContextCompat
-import io.github.aakira.napier.Napier
 import org.koin.java.KoinJavaComponent.get
 import java.net.Inet4Address
 import java.net.InetAddress
 
 
 private fun InetAddress.toIntAddress(): Int {
-    check(this is Inet4Address)
+    check(this is Inet4Address) {"$this is not a Inet4Address"}
     val bytes = address
     var ip = 0
     for (index in 0..3) {
@@ -24,11 +22,30 @@ private fun InetAddress.toIntAddress(): Int {
 
 @Suppress("DEPRECATION")
 actual fun getScannableNetworks(): List<ScannableNetwork> {
-    Napier.i("getScannableNetworks")
-    val context :Context = get(Context::class.java)
-    Napier.i("${context.getSystemService(Context.WIFI_SERVICE)}")
+    val context: Context = get(Context::class.java)
     val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
-    Napier.i(wm.connectionInfo.ipAddress.toString())
+    val connectionInfo = wm.connectionInfo ?: return emptyList()
+    if (connectionInfo.ipAddress == 0) {
+        return emptyList()
+    }
+
+    val connectivityManager =
+        ContextCompat.getSystemService(context, ConnectivityManager::class.java) ?: return emptyList()
+    val network = connectivityManager.activeNetwork
+    val linkProperties = connectivityManager.getLinkProperties(network) ?: return emptyList()
+    val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return emptyList()
+    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+        return linkProperties.linkAddresses.filter { it.address is Inet4Address }.map { address ->
+            val addressValue = address.address.toIntAddress()
+            val broadcastValue = addressValue or ((1 shl (32 - address.prefixLength)) - 1)
+            ScannableNetwork(
+                name = linkProperties.interfaceName ?: "",
+                address = addressValue,
+                broadcast = broadcastValue,
+                maskLength = address.prefixLength.toShort(),
+            )
+        }
+    }
     return emptyList()
 }
 
