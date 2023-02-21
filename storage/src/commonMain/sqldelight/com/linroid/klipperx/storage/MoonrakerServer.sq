@@ -10,6 +10,10 @@ CREATE INDEX MoonrakerServer_host ON MoonrakerServer(host);
 
 getAll:
     SELECT * FROM MoonrakerServer;
+
+getMaxSort:
+    SELECT MAX(sort) FROM MoonrakerServer;
+
 add:
     INSERT INTO MoonrakerServer(host, port, alias, sort)
-    VALUES (?, ?, ?, MAX(sort) + 1);
+    VALUES (?, ?, ?, ?);

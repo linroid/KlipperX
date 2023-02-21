@@ -14,6 +14,7 @@ import com.linroid.klipperx.foundation.koin
 import com.linroid.klipperx.moonraker.MoonrakerDiscover
 import com.linroid.klipperx.moonraker.MoonrakerInstance
 import com.linroid.klipperx.storage.db.Database
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -34,9 +35,10 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
             coroutineScope.launch {
                 discover.search().onEach {
                     val db: Database = koin().get()
-                    db.moonrakerServerQueries.add(it.host, it.port.toLong(), it.name)
+                    val sort = (db.moonrakerServerQueries.getMaxSort().executeAsOne().MAX ?: 0) + 1
+                    db.moonrakerServerQueries.add(it.host, it.port.toLong(), it.name, sort)
                     db.moonrakerServerQueries.getAll().executeAsList().forEach {
-                        println(it)
+                        Napier.d("server: $it")
                     }
                 }.collect(instances::add)
                 hasFinishedDiscovering = true
