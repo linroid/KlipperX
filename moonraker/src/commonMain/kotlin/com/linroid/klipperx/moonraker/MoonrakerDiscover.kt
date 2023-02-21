@@ -4,9 +4,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.*
 import kotlin.math.pow
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
-import kotlin.time.measureTimedValue
 
 class MoonrakerDiscover(
     private val timeout: Long = 500,

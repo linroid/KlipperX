@@ -5,9 +5,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import org.koin.java.KoinJavaComponent.inject
+import io.github.aakira.napier.Napier
+import org.koin.java.KoinJavaComponent.get
 import java.net.Inet4Address
 import java.net.InetAddress
 
@@ -22,15 +22,19 @@ private fun InetAddress.toIntAddress(): Int {
     return ip
 }
 
+@Suppress("DEPRECATION")
 actual fun getScannableNetworks(): List<ScannableNetwork> {
-    val context :Context by inject(Context::class.java)
+    Napier.i("getScannableNetworks")
+    val context :Context = get(Context::class.java)
+    Napier.i("${context.getSystemService(Context.WIFI_SERVICE)}")
     val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
-    Log.i("Lin", wm.connectionInfo.ipAddress.toString())
+    Napier.i(wm.connectionInfo.ipAddress.toString())
     return emptyList()
 }
 
+@Suppress("DEPRECATION")
 actual fun getHostNameByIp(ip: String): String {
-    val context: Context by inject(Context::class.java)
+    val context: Context = get(Context::class.java)
     val connectivityManager =
         ContextCompat.getSystemService(context, ConnectivityManager::class.java) ?: return ip
     val networks = connectivityManager.allNetworks.filter { network ->

@@ -2,11 +2,14 @@ CREATE TABLE MoonrakerServer (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   host TEXT NOT NULL,
   port INTEGER NOT NULL,
-  name TEXT,
+  alias TEXT,
   sort INTEGER NOT NULL
 );
 
 CREATE INDEX MoonrakerServer_host ON MoonrakerServer(host);
 
-selectAll:
+getAll:
     SELECT * FROM MoonrakerServer;
+add:
+    INSERT INTO MoonrakerServer(host, port, alias, sort)
+    VALUES (?, ?, ?, MAX(sort) + 1);

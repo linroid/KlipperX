@@ -9,7 +9,9 @@ import platform.CoreGraphics.CGFloat
 
 @Suppress("unused")
 fun mainViewController() = Application("KotlinX") {
-    App()
+    KlipperXWindow {
+        DiscoverScreen()
+    }
 }
 
 fun setSafeArea(start: CGFloat, top: CGFloat, end: CGFloat, bottom: CGFloat) {
