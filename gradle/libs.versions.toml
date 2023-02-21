@@ -23,6 +23,7 @@ ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref="ktor"}
 androidx-core = "androidx.core:core-ktx:1.9.0"
 settings = "com.russhwolf:multiplatform-settings:1.0.0"
 kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+napier = "io.github.aakira:napier:2.6.1"
 
 [bundles]
 koin-tests = ["koin-test", "koin-test-junit4", "koin-test-junit5"]

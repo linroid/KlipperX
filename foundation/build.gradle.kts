@@ -10,6 +10,7 @@ kotlin {
         named("commonMain") {
             dependencies {
                 api(libs.koin.core)
+                api(libs.napier)
             }
         }
         named("commonTest") {
