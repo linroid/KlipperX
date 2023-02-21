@@ -34,8 +34,6 @@ kotlin {
                 implementation(project(":foundation"))
                 implementation(project(":storage"))
                 implementation(project(":moonraker"))
-
-                api(libs.koin.core)
             }
         }
         if (isOnMacOs) {
