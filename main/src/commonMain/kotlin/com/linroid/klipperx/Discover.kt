@@ -1,14 +1,21 @@
 package com.linroid.klipperx
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.typography
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.linroid.klipperx.foundation.koin
 import com.linroid.klipperx.moonraker.MoonrakerDiscover
@@ -51,7 +58,7 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
     Surface(color = MaterialTheme.colors.background) {
         Box(modifier.fillMaxSize()) {
             Column(
-                Modifier.align(Alignment.Center),
+                Modifier.align(Alignment.Center).animateContentSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
@@ -67,51 +74,63 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
                         style = typography.subtitle2,
                     )
                 }
-                LazyColumn(Modifier.sizeIn(maxHeight = 300.dp)) {
-                    items(instances) {
-                        Card(
-                            Modifier
-                                .defaultMinSize(minWidth = 250.dp, minHeight = 64.dp)
-                                .animateItemPlacement()
-                                .clickable { },
-                            backgroundColor = MaterialTheme.colors.secondary.copy(alpha = 0.4f),
-                            elevation = 0.dp
-                        ) {
-                            if (it.name == it.host) {
-                                Box(Modifier.padding(8.dp)) {
-                                    Text(
-                                        it.getDisplayName(),
-                                        style = typography.h6,
-                                        color = MaterialTheme.colors.onSecondary,
-                                        modifier = Modifier.align(Alignment.CenterStart)
-                                    )
-                                }
-                            } else {
-                                Column(Modifier.padding(8.dp)) {
-                                    Text(
-                                        it.name, style = typography.h6,
-                                        color = MaterialTheme.colors.onSecondary,
-                                    )
-                                    Spacer(Modifier.height(4.dp))
-                                    Text(
-                                        it.getDisplayName(), style = typography.body1,
-                                        color = MaterialTheme.colors.onSecondary,
-                                    )
-                                }
+                LazyColumn(
+                    Modifier.sizeIn(
+                        maxHeight = 300.dp,
+                        minWidth = 300.dp,
+                        maxWidth = 300.dp
+                    )
+                ) {
+                    items(instances) { instance ->
+                        Row(Modifier.fillMaxWidth()) {
+                            Card(
+                                Modifier
+                                    .defaultMinSize(minHeight = 64.dp)
+                                    .weight(1f)
+                                    .animateItemPlacement()
+                                    .clickable { },
+                                backgroundColor = MaterialTheme.colors.secondary.copy(alpha = 0.2f),
+                                elevation = 0.dp
+                            ) {
+                                if (instance.name == instance.host) {
+                                    Box(Modifier.padding(8.dp).align(Alignment.CenterVertically)) {
+                                        Text(
+                                            instance.getDisplayName(),
+                                            style = typography.h6,
+                                            color = MaterialTheme.colors.onSecondary,
+                                            modifier = Modifier.align(Alignment.CenterStart)
+                                        )
+                                    }
+                                } else {
+                                    Column(Modifier.padding(8.dp)) {
+                                        Text(
+                                            instance.name, style = typography.h6,
+                                            color = MaterialTheme.colors.onSecondary,
+                                        )
+                                        Spacer(Modifier.height(4.dp))
+                                        Text(
+                                            instance.getDisplayName(), style = typography.body1,
+                                            color = MaterialTheme.colors.onSecondary,
+                                        )
+                                    }
 
+                                }
+                            }
+                            Spacer(Modifier.width(16.dp))
+                            IconButton(
+                                onClick = {},
+                                Modifier.align(Alignment.CenterVertically)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colors.primary)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.Add,
+                                    "Add ${instance.getDisplayName()}",
+                                    tint = MaterialTheme.colors.onPrimary
+                                )
                             }
                         }
                         Spacer(Modifier.height(8.dp))
-                    }
-                }
-                Spacer(Modifier.height(8.dp))
-
-                if (instances.size > 0) {
-                    Button(
-                        modifier = Modifier.sizeIn(minWidth = 120.dp),
-                        onClick = {}
-                    ) {
-                        Text("Add all")
                     }
                 }
             }
