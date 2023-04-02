@@ -1,7 +1,6 @@
 [versions]
 # https://developer.android.com/studio/releases/gradle-plugin
-agp = "7.4.1"
-#agp = "7.4.1"
+agp = "7.4.2"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "1.8.0"
 # https://github.com/JetBrains/compose-multiplatform/releases
@@ -30,6 +29,7 @@ ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref="ktor"}
 androidx-core = "androidx.core:core-ktx:1.9.0"
 settings = "com.russhwolf:multiplatform-settings:1.0.0"
 kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+# logging libray, see https://github.com/AAkira/Napier
 napier = "io.github.aakira:napier:2.6.1"
 
 [bundles]
