@@ -4,7 +4,7 @@ agp = "7.4.2"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "1.8.0"
 # https://github.com/JetBrains/compose-multiplatform/releases
-compose = "1.4.0-alpha01-dev1003"
+compose = "1.4.0"
 # https://insert-koin.io/docs/setup/koin/
 koin = "3.4.0"
 # https://github.com/ktorio/ktor/releases
