@@ -11,6 +11,7 @@ rootProject.name = "KlipperX"
 
 include(
     ":foundation",
+    ":ui",
     ":storage",
     ":moonraker",
     ":main",

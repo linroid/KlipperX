@@ -1,5 +1,6 @@
-package com.linroid.klipperx
+package com.linroid.klipperx.discover
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,19 +9,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+
 import com.linroid.klipperx.foundation.koin
 import com.linroid.klipperx.moonraker.MoonrakerDiscover
 import com.linroid.klipperx.moonraker.MoonrakerInstance
 import com.linroid.klipperx.storage.db.Database
+import com.linroid.klipperx.ui.Dialog
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -34,6 +37,8 @@ internal val DarkMode = compositionLocalOf { darkModeState }
 internal fun DiscoverScreen(modifier: Modifier = Modifier) {
     val instances = remember { mutableStateListOf<MoonrakerInstance>() }
     var hasFinishedDiscovering by remember { mutableStateOf(false) }
+
+    val toSaveInstance = remember { mutableStateOf<MoonrakerInstance?>(null) }
 
     val coroutineScope = rememberCoroutineScope()
     DisposableEffect(Unit) {
@@ -63,7 +68,7 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
             ) {
                 Text(
                     "Welcome to KlipperX",
-                    style = typography.h4,
+                    style = MaterialTheme.typography.h4,
                 )
                 Spacer(Modifier.size(32.dp))
                 if (instances.isEmpty()) {
@@ -71,8 +76,16 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
                     Spacer(Modifier.size(8.dp))
                     Text(
                         "Searching printer ...",
-                        style = typography.subtitle2,
+                        style = MaterialTheme.typography.subtitle2,
                     )
+                }
+                if (instances.size > 0) {
+                    Text(
+                        "Founded(${instances.size}):",
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier.align(Alignment.Start)
+                    )
+                    Spacer(Modifier.height(8.dp))
                 }
                 LazyColumn(
                     Modifier.sizeIn(
@@ -96,7 +109,7 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
                                     Box(Modifier.padding(8.dp).align(Alignment.CenterVertically)) {
                                         Text(
                                             instance.getDisplayName(),
-                                            style = typography.h6,
+                                            style = MaterialTheme.typography.h6,
                                             color = MaterialTheme.colors.onSecondary,
                                             modifier = Modifier.align(Alignment.CenterStart)
                                         )
@@ -104,12 +117,13 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
                                 } else {
                                     Column(Modifier.padding(8.dp)) {
                                         Text(
-                                            instance.name, style = typography.h6,
+                                            instance.name, style = MaterialTheme.typography.h6,
                                             color = MaterialTheme.colors.onSecondary,
                                         )
                                         Spacer(Modifier.height(4.dp))
                                         Text(
-                                            instance.getDisplayName(), style = typography.body1,
+                                            instance.getDisplayName(),
+                                            style = MaterialTheme.typography.body1,
                                             color = MaterialTheme.colors.onSecondary,
                                         )
                                     }
@@ -118,7 +132,9 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
                             }
                             Spacer(Modifier.width(16.dp))
                             IconButton(
-                                onClick = {},
+                                onClick = {
+                                    toSaveInstance.value = instance
+                                },
                                 Modifier.align(Alignment.CenterVertically)
                                     .clip(CircleShape)
                                     .background(MaterialTheme.colors.primary)
@@ -143,7 +159,78 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
                     Spacer(Modifier.size(8.dp))
                     Text(
                         "Searching printer ...",
-                        style = typography.subtitle2,
+                        style = MaterialTheme.typography.subtitle2,
+                    )
+                }
+            }
+        }
+        SaveInstanceDialog(toSaveInstance.value, onDismiss = {
+            toSaveInstance.value = null
+        })
+    }
+}
+
+@Composable
+fun SaveInstanceDialog(instance: MoonrakerInstance?, onDismiss: () -> Unit) {
+    if (instance == null) {
+        return
+    }
+    var instanceName = remember { TextFieldValue() }
+    Dialog(title = "Add printer", onCloseRequest = onDismiss) {
+        val rowHeight = 56.dp
+        Column {
+            // Text(
+            //     "Add printer",
+            //     style = MaterialTheme.typography.h6,
+            //     modifier = Modifier.align(Alignment.CenterHorizontally).padding(8.dp),
+            // )
+            Row(
+                modifier = Modifier.fillMaxSize().padding(16.dp)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.End,
+                ) {
+
+                    Box(
+                        Modifier.defaultMinSize(minHeight = rowHeight, minWidth = 72.dp),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Text(
+                            "Host:",
+                            modifier = Modifier.padding(end = 16.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    Box(
+                        Modifier.defaultMinSize(minHeight = rowHeight, minWidth = 96.dp),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Text(
+                            "Name:",
+                            modifier = Modifier.padding(end = 16.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                ) {
+                    TextField(
+                        TextFieldValue(instance.getDisplayName()),
+                        enabled = false,
+                        modifier = Modifier.defaultMinSize(minHeight = rowHeight),
+                        onValueChange = {
+                        },
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    TextField(
+                        instanceName,
+                        modifier = Modifier.defaultMinSize(minHeight = rowHeight),
+
+                        onValueChange = {
+                            instanceName = it
+                        },
                     )
                 }
             }

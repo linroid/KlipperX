@@ -34,6 +34,7 @@ kotlin {
                 implementation(project(":foundation"))
                 implementation(project(":storage"))
                 implementation(project(":moonraker"))
+                implementation(project(":ui"))
             }
         }
         if (isOnMacOs) {

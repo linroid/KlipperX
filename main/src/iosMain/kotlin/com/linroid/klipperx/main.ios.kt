@@ -3,6 +3,9 @@ package com.linroid.klipperx
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Application
+import com.linroid.klipperx.discover.DiscoverScreen
+import com.linroid.klipperx.discover.darkModeState
+import com.linroid.klipperx.discover.safeAreaState
 import org.jetbrains.skiko.SystemTheme
 import org.jetbrains.skiko.currentSystemTheme
 import platform.CoreGraphics.CGFloat
