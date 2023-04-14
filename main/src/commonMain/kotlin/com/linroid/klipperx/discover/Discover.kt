@@ -1,6 +1,5 @@
 package com.linroid.klipperx.discover
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,13 +25,12 @@ import com.linroid.klipperx.moonraker.MoonrakerInstance
 import com.linroid.klipperx.storage.db.Database
 import com.linroid.klipperx.ui.Dialog
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 internal val darkModeState = mutableStateOf(false)
 internal val safeAreaState = mutableStateOf(PaddingValues())
-internal val SafeArea = compositionLocalOf { safeAreaState }
-internal val DarkMode = compositionLocalOf { darkModeState }
+// internal val SafeArea = compositionLocalOf { safeAreaState }
+// internal val DarkMode = compositionLocalOf { darkModeState }
 
 @Composable
 internal fun DiscoverScreen(modifier: Modifier = Modifier) {
@@ -45,14 +44,7 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
         val discover = MoonrakerDiscover()
         if (discover.isAvailable()) {
             coroutineScope.launch {
-                discover.search().onEach {
-                    val db: Database = koin().get()
-                    val sort = (db.moonrakerServerQueries.getMaxSort().executeAsOne().MAX ?: 0) + 1
-                    db.moonrakerServerQueries.add(it.host, it.port.toLong(), it.name, sort)
-                    db.moonrakerServerQueries.getAll().executeAsList().forEach {
-                        Napier.d("server: $it")
-                    }
-                }.collect(instances::add)
+                discover.search().collect(instances::add)
                 hasFinishedDiscovering = true
             }
         }
@@ -85,7 +77,7 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
                         style = MaterialTheme.typography.caption,
                         modifier = Modifier.align(Alignment.Start)
                     )
-                    Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(16.dp))
                 }
                 LazyColumn(
                     Modifier.sizeIn(
@@ -95,55 +87,31 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
                     )
                 ) {
                     items(instances) { instance ->
-                        Row(Modifier.fillMaxWidth()) {
+                        Row(Modifier.fillMaxWidth().clickable {
+                            toSaveInstance.value = instance
+                        }) {
                             Card(
                                 Modifier
                                     .defaultMinSize(minHeight = 64.dp)
                                     .weight(1f)
-                                    .animateItemPlacement()
-                                    .clickable { },
+                                    .animateItemPlacement(),
                                 backgroundColor = MaterialTheme.colors.secondary.copy(alpha = 0.2f),
                                 elevation = 0.dp
                             ) {
-                                if (instance.name == instance.host) {
-                                    Box(Modifier.padding(8.dp).align(Alignment.CenterVertically)) {
+                                Box(Modifier.padding(8.dp).align(Alignment.CenterVertically)) {
+                                    Row(modifier = Modifier.align(Alignment.CenterStart)) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.KeyboardArrowRight,
+                                            contentDescription = null
+                                        )
+                                        Spacer(Modifier.width(8.dp))
                                         Text(
-                                            instance.getDisplayName(),
+                                            instance.host,
                                             style = MaterialTheme.typography.h6,
                                             color = MaterialTheme.colors.onSecondary,
-                                            modifier = Modifier.align(Alignment.CenterStart)
                                         )
                                     }
-                                } else {
-                                    Column(Modifier.padding(8.dp)) {
-                                        Text(
-                                            instance.name, style = MaterialTheme.typography.h6,
-                                            color = MaterialTheme.colors.onSecondary,
-                                        )
-                                        Spacer(Modifier.height(4.dp))
-                                        Text(
-                                            instance.getDisplayName(),
-                                            style = MaterialTheme.typography.body1,
-                                            color = MaterialTheme.colors.onSecondary,
-                                        )
-                                    }
-
                                 }
-                            }
-                            Spacer(Modifier.width(16.dp))
-                            IconButton(
-                                onClick = {
-                                    toSaveInstance.value = instance
-                                },
-                                Modifier.align(Alignment.CenterVertically)
-                                    .clip(CircleShape)
-                                    .background(MaterialTheme.colors.primary)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Rounded.Add,
-                                    "Add ${instance.getDisplayName()}",
-                                    tint = MaterialTheme.colors.onPrimary
-                                )
                             }
                         }
                         Spacer(Modifier.height(8.dp))
@@ -175,18 +143,11 @@ fun SaveInstanceDialog(instance: MoonrakerInstance?, onDismiss: () -> Unit) {
     if (instance == null) {
         return
     }
-    var instanceName = remember { TextFieldValue() }
+    val instanceName = remember(instance) { TextFieldValue() }
     Dialog(title = "Add printer", onCloseRequest = onDismiss) {
         val rowHeight = 56.dp
-        Column {
-            // Text(
-            //     "Add printer",
-            //     style = MaterialTheme.typography.h6,
-            //     modifier = Modifier.align(Alignment.CenterHorizontally).padding(8.dp),
-            // )
-            Row(
-                modifier = Modifier.fillMaxSize().padding(16.dp)
-            ) {
+        Column(Modifier.fillMaxSize().padding(16.dp)) {
+            Row {
                 Column(
                     horizontalAlignment = Alignment.End,
                 ) {
@@ -217,23 +178,36 @@ fun SaveInstanceDialog(instance: MoonrakerInstance?, onDismiss: () -> Unit) {
                     horizontalAlignment = Alignment.Start,
                 ) {
                     TextField(
-                        TextFieldValue(instance.getDisplayName()),
+                        TextFieldValue(instance.url),
                         enabled = false,
                         modifier = Modifier.defaultMinSize(minHeight = rowHeight),
-                        onValueChange = {
-                        },
+                        onValueChange = {},
                     )
                     Spacer(Modifier.height(8.dp))
                     TextField(
                         instanceName,
                         modifier = Modifier.defaultMinSize(minHeight = rowHeight),
-
+                        label = {
+                            Text(instance.host)
+                        },
                         onValueChange = {
-                            instanceName = it
                         },
                     )
                 }
             }
+            Spacer(Modifier.height(8.dp))
+            Button(
+                modifier = Modifier.align(Alignment.End),
+                shape = MaterialTheme.shapes.medium,
+                onClick = {
+                    val db: Database = koin().get()
+                    val sort = (db.moonrakerServerQueries.getMaxSort().executeAsOne().MAX ?: 0) + 1
+                    db.moonrakerServerQueries.add(instance.host, instance.port.toLong(),
+                        instanceName.text.ifEmpty { instance.host }, sort
+                    )
+                    Napier.d("Save instance: $instance with name: $instanceName")
+                },
+            ) { Text("Add") }
         }
     }
 }

@@ -5,11 +5,12 @@ data class MoonrakerInstance(
     val port: Int,
     val name: String,
 ) {
-    fun getDisplayName():String {
-        return if (port == 80) {
-            "http://$host"
-        } else {
-            "http://$host:$port"
+    val url: String
+        get() {
+            return if (port == 80) {
+                "http://$host"
+            } else {
+                "http://$host:$port"
+            }
         }
-    }
 }
