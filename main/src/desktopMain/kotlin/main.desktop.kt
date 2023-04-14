@@ -1,12 +1,7 @@
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import com.linroid.klipperx.discover.DiscoverScreen
-import com.linroid.klipperx.KlipperXWindow
+import com.linroid.klipperx.NavigationHost
 
 @Composable
 fun MainView() {
-    KlipperXWindow {
-        DiscoverScreen(Modifier.fillMaxSize())
-    }
+    NavigationHost()
 }

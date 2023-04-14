@@ -7,23 +7,23 @@ plugins {
 
 kotlin {
     sourceSets {
-        getByName("commonMain") {
+        named("commonMain") {
             dependencies {
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material)
-                api(compose.animation)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                implementation(compose.animation)
+                implementation(compose.ui)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
                 // @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 // api(compose.material3)
-                api(compose.ui)
             }
         }
 
-        getByName("desktopMain") {
+        named("desktopMain") {
             dependencies {
-                api(compose.preview)
+                implementation(compose.preview)
             }
         }
     }

@@ -1,33 +1,20 @@
 package com.linroid.klipperx.discover
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.linroid.klipperx.SettingsKeys
 
-import com.linroid.klipperx.foundation.koin
 import com.linroid.klipperx.moonraker.MoonrakerDiscover
 import com.linroid.klipperx.moonraker.MoonrakerInstance
-import com.linroid.klipperx.storage.db.Database
-import com.linroid.klipperx.ui.Dialog
-import com.russhwolf.settings.Settings
-import com.russhwolf.settings.set
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
 internal val darkModeState = mutableStateOf(false)
@@ -36,11 +23,9 @@ internal val safeAreaState = mutableStateOf(PaddingValues())
 // internal val DarkMode = compositionLocalOf { darkModeState }
 
 @Composable
-internal fun DiscoverScreen(modifier: Modifier = Modifier) {
+internal fun DiscoverScreen(modifier: Modifier = Modifier, onAdd:(MoonrakerInstance)->Unit) {
     val instances = remember { mutableStateListOf<MoonrakerInstance>() }
     var hasFinishedDiscovering by remember { mutableStateOf(false) }
-
-    val toSaveInstance = remember { mutableStateOf<MoonrakerInstance?>(null) }
 
     val coroutineScope = rememberCoroutineScope()
     DisposableEffect(Unit) {
@@ -91,7 +76,7 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
                 ) {
                     items(instances) { instance ->
                         Row(Modifier.fillMaxWidth().clickable {
-                            toSaveInstance.value = instance
+                            onAdd(instance)
                         }) {
                             Card(
                                 Modifier
@@ -134,85 +119,6 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier) {
                     )
                 }
             }
-        }
-        SaveInstanceDialog(toSaveInstance.value, onDismiss = {
-            toSaveInstance.value = null
-        })
-    }
-}
-
-@Composable
-fun SaveInstanceDialog(instance: MoonrakerInstance?, onDismiss: () -> Unit) {
-    if (instance == null) {
-        return
-    }
-    val instanceName = remember(instance) { TextFieldValue() }
-    Dialog(title = "Add printer", onCloseRequest = onDismiss) {
-        val rowHeight = 56.dp
-        Column(Modifier.fillMaxSize().padding(16.dp)) {
-            Row {
-                Column(
-                    horizontalAlignment = Alignment.End,
-                ) {
-
-                    Box(
-                        Modifier.defaultMinSize(minHeight = rowHeight, minWidth = 72.dp),
-                        contentAlignment = Alignment.CenterEnd
-                    ) {
-                        Text(
-                            "Host:",
-                            modifier = Modifier.padding(end = 16.dp),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                    Spacer(Modifier.height(8.dp))
-                    Box(
-                        Modifier.defaultMinSize(minHeight = rowHeight, minWidth = 96.dp),
-                        contentAlignment = Alignment.CenterEnd
-                    ) {
-                        Text(
-                            "Name:",
-                            modifier = Modifier.padding(end = 16.dp),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                ) {
-                    TextField(
-                        TextFieldValue(instance.url),
-                        enabled = false,
-                        modifier = Modifier.defaultMinSize(minHeight = rowHeight),
-                        onValueChange = {},
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    TextField(
-                        instanceName,
-                        modifier = Modifier.defaultMinSize(minHeight = rowHeight),
-                        label = {
-                            Text(instance.host)
-                        },
-                        onValueChange = {
-                        },
-                    )
-                }
-            }
-            Spacer(Modifier.height(8.dp))
-            Button(
-                modifier = Modifier.align(Alignment.End),
-                shape = MaterialTheme.shapes.medium,
-                onClick = {
-                    val db: Database = koin().get()
-                    val sort = (db.moonrakerServerQueries.getMaxSort().executeAsOne().MAX ?: 0) + 1
-                    db.moonrakerServerQueries.add(instance.host, instance.port.toLong(),
-                        instanceName.text.ifEmpty { instance.host }, sort
-                    )
-                    val settings: Settings = koin().get()
-                    settings[SettingsKeys.DefaultInstanceHost] = instance.host
-                    Napier.d("Save instance: $instance with name: $instanceName")
-                },
-            ) { Text("Add") }
         }
     }
 }

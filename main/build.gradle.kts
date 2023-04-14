@@ -35,6 +35,7 @@ kotlin {
                 implementation(project(":storage"))
                 implementation(project(":moonraker"))
                 implementation(project(":ui"))
+                api(libs.precompose)
             }
         }
         if (isOnMacOs) {
