@@ -2,18 +2,24 @@ package com.linroid.klipperx
 
 import androidx.compose.runtime.Composable
 import com.linroid.klipperx.discover.DiscoverScreen
+import com.linroid.klipperx.foundation.Host
 import com.linroid.klipperx.instance.AddInstanceScreen
+import com.linroid.klipperx.printer.PrinterScreen
+import com.russhwolf.settings.Settings
+import com.russhwolf.settings.get
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.query
 import moe.tlaster.precompose.navigation.rememberNavigator
+import org.koin.compose.koinInject
 
 @Composable
-fun NavigationHost() {
+internal fun NavigationHost(settings: Settings = koinInject()) {
     val navigator = rememberNavigator()
+    val defaultHost = settings.get<String>(SettingsKeys.DefaultHost)
     KlipperXWindow {
         NavHost(
             navigator = navigator,
-            initialRoute = "/discover"
+            initialRoute = if (defaultHost == null) "/discover" else "/printer"
         ) {
             scene("/discover") {
                 DiscoverScreen(onAdd = {
@@ -23,8 +29,15 @@ fun NavigationHost() {
             scene("/add_instance") { entry ->
                 val host = entry.query<String>("host")
                 AddInstanceScreen(host, onAdded = {
-                    navigator.navigate("/home")
+                    navigator.navigate("/printer")
                 })
+            }
+            scene("/printer") { entry ->
+                var host = entry.query<String>("host")
+                if (host == null) {
+                    host = settings[SettingsKeys.DefaultHost]
+                }
+                PrinterScreen(Host.parse(host!!))
             }
         }
     }

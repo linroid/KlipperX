@@ -1,7 +1,6 @@
 CREATE TABLE MoonrakerServer (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   host TEXT NOT NULL UNIQUE,
-  port INTEGER NOT NULL,
   alias TEXT,
   sort INTEGER NOT NULL
 );
@@ -15,5 +14,8 @@ getMaxSort:
     SELECT MAX(sort) FROM MoonrakerServer;
 
 add:
-    INSERT INTO MoonrakerServer(host, port, alias, sort)
-    VALUES (?, ?, ?, ?);
+    INSERT INTO MoonrakerServer(host, alias, sort)
+    VALUES (?, ?, ?);
+
+findByHost:
+    SELECT * FROM MoonrakerServer WHERE host = ?;

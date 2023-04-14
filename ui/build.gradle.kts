@@ -10,6 +10,7 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
+                implementation(libs.koin.core)
             }
         }
     }

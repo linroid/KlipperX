@@ -12,7 +12,7 @@ kotlin {
         named("commonMain") {
             dependencies {
                 implementation(project(":foundation"))
-                implementation(libs.bundles.ktor)
+                api(libs.bundles.ktor)
             }
         }
         named("commonTest") {

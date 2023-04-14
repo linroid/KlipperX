@@ -35,6 +35,7 @@ kotlin {
                 implementation(project(":storage"))
                 implementation(project(":moonraker"))
                 implementation(project(":ui"))
+                implementation(project(":moonraker"))
                 api(libs.precompose)
             }
         }

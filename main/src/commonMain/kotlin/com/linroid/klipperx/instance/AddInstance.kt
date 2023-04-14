@@ -32,8 +32,8 @@ import com.russhwolf.settings.set
 import io.github.aakira.napier.Napier
 
 @Composable
-fun AddInstanceScreen(host: String?, onAdded: () -> Unit) {
-    var addressValue by remember { mutableStateOf(TextFieldValue(host ?: "")) }
+internal fun AddInstanceScreen(host: String?, onAdded: () -> Unit) {
+    var hostValue by remember { mutableStateOf(TextFieldValue(host ?: "")) }
     var nameValue by remember { mutableStateOf(TextFieldValue()) }
 
     val rowHeight = 48.dp
@@ -78,11 +78,11 @@ fun AddInstanceScreen(host: String?, onAdded: () -> Unit) {
                 modifier = Modifier.width(240.dp)
             ) {
                 TextField(
-                    addressValue,
+                    hostValue,
                     enabled = false,
                     modifier = Modifier.height(rowHeight),
                     onValueChange = {
-                        addressValue = it
+                        hostValue = it
                     },
                 )
                 Spacer(Modifier.height(8.dp))
@@ -105,23 +105,13 @@ fun AddInstanceScreen(host: String?, onAdded: () -> Unit) {
                         val db: Database = koin().get()
                         val sort =
                             (db.moonrakerServerQueries.getMaxSort().executeAsOne().MAX ?: 0) + 1
-                        val toSaveHost: String
-                        val port: Long
-                        if (addressValue.text.contains(":")) {
-                            val splits = addressValue.text.split(":")
-                            toSaveHost = splits[0]
-                            port = splits[1].toLong()
-                            // TODO: Validate host and port
-                        } else {
-                            toSaveHost = addressValue.text
-                            port = 80L
-                        }
                         // TODO: handle in background thread
                         val name = nameValue.text.ifEmpty { null }
-                        db.moonrakerServerQueries.add(toSaveHost, port, name, sort)
+                        // TODO: Validate host address
+                        db.moonrakerServerQueries.add(hostValue.text, name, sort)
                         val settings: Settings = koin().get()
-                        settings[SettingsKeys.DefaultInstanceHost] = toSaveHost
-                        Napier.d("Save instance: $toSaveHost with name: $name")
+                        settings[SettingsKeys.DefaultHost] = hostValue.text
+                        Napier.d("Save instance: ${hostValue.text} with name: $name")
                         onAdded()
                     },
                 ) { Text("Add") }
