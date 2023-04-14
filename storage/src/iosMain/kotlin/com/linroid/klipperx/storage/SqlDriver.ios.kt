@@ -5,5 +5,5 @@ import app.cash.sqldelight.driver.native.NativeSqliteDriver
 import com.linroid.klipperx.storage.db.Database
 
 internal actual fun createSqlDriver(name: String): SqlDriver {
-    return NativeSqliteDriver(Database.Schema, "klipperx.db")
+    return NativeSqliteDriver(Database.Schema, name)
 }

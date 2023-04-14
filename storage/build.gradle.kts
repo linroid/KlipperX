@@ -22,6 +22,7 @@ kotlin {
             dependencies {
                 implementation(project(":foundation"))
                 api(libs.settings)
+                api(libs.okio)
             }
         }
         named("androidMain") {

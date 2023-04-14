@@ -42,7 +42,7 @@ class MoonrakerDiscover(
         return coroutineScope.async {
             try {
                 val succeed = pingMoonraker(host, timeout)
-                Napier.v("ping $host: $succeed")
+                // Napier.v("ping $host: $succeed")
                 if (succeed) {
                     scope.send(MoonrakerInstance(host, 80, getHostNameByIp(host)))
                 }

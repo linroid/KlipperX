@@ -18,12 +18,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.linroid.klipperx.SettingsKeys
 
 import com.linroid.klipperx.foundation.koin
 import com.linroid.klipperx.moonraker.MoonrakerDiscover
 import com.linroid.klipperx.moonraker.MoonrakerInstance
 import com.linroid.klipperx.storage.db.Database
 import com.linroid.klipperx.ui.Dialog
+import com.russhwolf.settings.Settings
+import com.russhwolf.settings.set
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
@@ -205,6 +208,8 @@ fun SaveInstanceDialog(instance: MoonrakerInstance?, onDismiss: () -> Unit) {
                     db.moonrakerServerQueries.add(instance.host, instance.port.toLong(),
                         instanceName.text.ifEmpty { instance.host }, sort
                     )
+                    val settings: Settings = koin().get()
+                    settings[SettingsKeys.DefaultInstanceHost] = instance.host
                     Napier.d("Save instance: $instance with name: $instanceName")
                 },
             ) { Text("Add") }
