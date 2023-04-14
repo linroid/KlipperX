@@ -8,7 +8,6 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -22,7 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.linroid.klipperx.foundation.Host
+import com.linroid.klipperx.moonraker.Host
 import com.linroid.klipperx.foundation.koin
 import com.linroid.klipperx.moonraker.MoonrakerSession
 import com.linroid.klipperx.moonraker.connectMoonrakerSession

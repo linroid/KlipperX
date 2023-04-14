@@ -1,20 +1,25 @@
 package com.linroid.klipperx.discover
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
 import com.linroid.klipperx.moonraker.MoonrakerDiscover
-import com.linroid.klipperx.moonraker.MoonrakerInstance
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
 internal val darkModeState = mutableStateOf(false)
@@ -23,8 +28,8 @@ internal val safeAreaState = mutableStateOf(PaddingValues())
 // internal val DarkMode = compositionLocalOf { darkModeState }
 
 @Composable
-internal fun DiscoverScreen(modifier: Modifier = Modifier, onAdd:(MoonrakerInstance)->Unit) {
-    val instances = remember { mutableStateListOf<MoonrakerInstance>() }
+internal fun DiscoverScreen(modifier: Modifier = Modifier, onAdd: (String?) -> Unit) {
+    val hosts = remember { mutableStateListOf<String>() }
     var hasFinishedDiscovering by remember { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
@@ -32,9 +37,12 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier, onAdd:(MoonrakerInsta
         val discover = MoonrakerDiscover()
         if (discover.isAvailable()) {
             coroutineScope.launch {
-                discover.search().collect(instances::add)
+                discover.search().collect(hosts::add)
                 hasFinishedDiscovering = true
             }
+        } else {
+            Napier.e("discover is not available")
+            hasFinishedDiscovering = true
         }
         onDispose {
             discover.dispose()
@@ -51,17 +59,33 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier, onAdd:(MoonrakerInsta
                     style = MaterialTheme.typography.h4,
                 )
                 Spacer(Modifier.size(32.dp))
-                if (instances.isEmpty()) {
+                if (hosts.isEmpty() && !hasFinishedDiscovering) {
                     CircularProgressIndicator(Modifier.size(32.dp))
                     Spacer(Modifier.size(8.dp))
                     Text(
                         "Searching printer ...",
                         style = MaterialTheme.typography.subtitle2,
                     )
+                } else {
+                    IconButton(
+                        onClick = {
+                            onAdd(null)
+                        },
+                        Modifier.align(Alignment.CenterHorizontally)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colors.primary)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Add,
+                            "Add printer",
+                            tint = MaterialTheme.colors.onPrimary
+                        )
+                    }
                 }
-                if (instances.size > 0) {
+
+                if (hosts.size > 0) {
                     Text(
-                        "Founded(${instances.size}):",
+                        "Founded(${hosts.size}):",
                         style = MaterialTheme.typography.caption,
                         modifier = Modifier.align(Alignment.Start)
                     )
@@ -74,9 +98,9 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier, onAdd:(MoonrakerInsta
                         maxWidth = 300.dp
                     )
                 ) {
-                    items(instances) { instance ->
+                    items(hosts) { host ->
                         Row(Modifier.fillMaxWidth().clickable {
-                            onAdd(instance)
+                            onAdd(host)
                         }) {
                             Card(
                                 Modifier
@@ -94,7 +118,7 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier, onAdd:(MoonrakerInsta
                                         )
                                         Spacer(Modifier.width(8.dp))
                                         Text(
-                                            instance.host,
+                                            host,
                                             style = MaterialTheme.typography.h6,
                                             color = MaterialTheme.colors.onSecondary,
                                         )
@@ -106,7 +130,7 @@ internal fun DiscoverScreen(modifier: Modifier = Modifier, onAdd:(MoonrakerInsta
                     }
                 }
             }
-            if (instances.size > 0 && !hasFinishedDiscovering) {
+            if (hosts.size > 0 && !hasFinishedDiscovering) {
                 Row(
                     Modifier.align(Alignment.BottomEnd).padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically

@@ -1,4 +1,4 @@
-package com.linroid.klipperx.foundation
+package com.linroid.klipperx.moonraker
 
 data class Host(val ip: String, val port: Int) {
     companion object {

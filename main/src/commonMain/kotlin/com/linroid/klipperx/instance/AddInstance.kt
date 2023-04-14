@@ -34,7 +34,7 @@ import io.github.aakira.napier.Napier
 @Composable
 internal fun AddInstanceScreen(host: String?, onAdded: () -> Unit) {
     var hostValue by remember { mutableStateOf(TextFieldValue(host ?: "")) }
-    var nameValue by remember { mutableStateOf(TextFieldValue()) }
+    var nameValue by remember { mutableStateOf(TextFieldValue("")) }
 
     val rowHeight = 48.dp
     Column(
@@ -79,7 +79,7 @@ internal fun AddInstanceScreen(host: String?, onAdded: () -> Unit) {
             ) {
                 TextField(
                     hostValue,
-                    enabled = false,
+                    enabled = host == null,
                     modifier = Modifier.height(rowHeight),
                     onValueChange = {
                         hostValue = it

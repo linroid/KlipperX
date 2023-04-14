@@ -31,20 +31,21 @@ class MoonrakerDiscover(
         return networks.isNotEmpty()
     }
 
-    fun search(): Flow<MoonrakerInstance> = channelFlow {
+    fun search(): Flow<String> = channelFlow {
         hosts.map { pingHost(it, this) }
             .toList()
             .awaitAll()
         close()
     }
 
-    private fun pingHost(host: String, scope: ProducerScope<MoonrakerInstance>): Deferred<Unit> {
+    private fun pingHost(ip: String, scope: ProducerScope<String>): Deferred<Unit> {
+        Napier.e("pingHost $ip")
         return coroutineScope.async {
             try {
-                val succeed = pingMoonraker(host, timeout)
-                // Napier.v("ping $host: $succeed")
+                val succeed = pingMoonraker(ip, timeout)
+                Napier.e("ping $ip: $succeed")
                 if (succeed) {
-                    scope.send(MoonrakerInstance(host, 80, getHostNameByIp(host)))
+                    scope.send(ip)
                 }
                 return@async
             } catch (error: Exception) {

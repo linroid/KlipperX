@@ -2,7 +2,7 @@ package com.linroid.klipperx
 
 import androidx.compose.runtime.Composable
 import com.linroid.klipperx.discover.DiscoverScreen
-import com.linroid.klipperx.foundation.Host
+import com.linroid.klipperx.moonraker.Host
 import com.linroid.klipperx.instance.AddInstanceScreen
 import com.linroid.klipperx.printer.PrinterScreen
 import com.russhwolf.settings.Settings
@@ -16,14 +16,19 @@ import org.koin.compose.koinInject
 internal fun NavigationHost(settings: Settings = koinInject()) {
     val navigator = rememberNavigator()
     val defaultHost = settings.get<String>(SettingsKeys.DefaultHost)
+    settings.clear()
     KlipperXWindow {
         NavHost(
             navigator = navigator,
             initialRoute = if (defaultHost == null) "/discover" else "/printer"
         ) {
             scene("/discover") {
-                DiscoverScreen(onAdd = {
-                    navigator.navigate("/add_instance?host=${it.host}")
+                DiscoverScreen(onAdd = { host ->
+                    if (host == null) {
+                        navigator.navigate("/add_instance")
+                    } else {
+                        navigator.navigate("/add_instance?host=$host")
+                    }
                 })
             }
             scene("/add_instance") { entry ->
