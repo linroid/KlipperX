@@ -22,8 +22,6 @@ internal val LocalWindowSizeClass = compositionLocalOf<WindowSizeClass> {
 }
 
 internal val darkModeState = mutableStateOf(false)
-internal val safeAreaState = mutableStateOf(PaddingValues())
-internal val LocalSafeArea = compositionLocalOf { safeAreaState }
 
 fun updateDarkMode() {
     darkModeState.value = currentSystemTheme == SystemTheme.DARK

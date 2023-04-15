@@ -38,6 +38,7 @@ import androidx.compose.material.icons.filled.Support
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Dataset
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import com.linroid.klipperx.LocalSafeArea
+import com.linroid.klipperx.SafeArea
 import com.linroid.klipperx.moonraker.Host
 import com.linroid.klipperx.foundation.koin
 import com.linroid.klipperx.moonraker.MoonrakerSession
@@ -60,41 +62,43 @@ import com.linroid.klipperx.theme.red500
 
 @Composable
 internal fun PrinterScreen(host: Host) {
-    val server = remember { mutableStateOf<MoonrakerServer?>(null) }
-    Column(Modifier.padding(LocalSafeArea.current.value)) {
-        TopAppBar(
-            title = {
-                Text(server.value?.alias ?: host.toString())
-            },
-            actions = {
-                IconButton(onClick = {}) {
-                    Icon(Icons.Filled.Notifications, contentDescription = "notifications")
+    SafeArea(navigationBarColor = MaterialTheme.colors.primarySurface) {
+        Column {
+            val server = remember { mutableStateOf<MoonrakerServer?>(null) }
+            TopAppBar(
+                title = {
+                    Text(server.value?.alias ?: host.toString())
+                },
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Filled.Notifications, contentDescription = "notifications")
+                    }
                 }
+            )
+            val session = remember(host) { mutableStateOf<MoonrakerSession?>(null) }
+            LaunchedEffect(host) {
+                if (host != Host.LOOPBACK) {
+                    val db: Database = koin().get()
+                    server.value =
+                        db.moonrakerServerQueries.findByHost(host.toString()).executeAsOne()
+                } else {
+                    server.value = MoonrakerServer(0, host.ip, "My Printer", 0)
+                }
+                session.value = connectMoonrakerSession(host.ip, host.port)
             }
-        )
-        val session = remember(host) { mutableStateOf<MoonrakerSession?>(null) }
-        LaunchedEffect(host) {
-            if (host != Host.LOOPBACK) {
-                val db: Database = koin().get()
-                server.value = db.moonrakerServerQueries.findByHost(host.toString()).executeAsOne()
+            if (session.value == null) {
+                Box(Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+                }
             } else {
-                server.value = MoonrakerServer(0, host.ip, "My Printer", 0)
+                ConnectedPrinterSession(session.value!!)
             }
-            session.value = connectMoonrakerSession(host.ip, host.port)
-        }
-        if (session.value == null) {
-            Box(Modifier.fillMaxSize()) {
-                CircularProgressIndicator(Modifier.align(Alignment.Center))
-            }
-        } else {
-            ConnectedPrinterSession(session.value!!)
         }
     }
 }
 
 @Composable
 private fun ColumnScope.ConnectedPrinterSession(session: MoonrakerSession) {
-    val scrollState = rememberScrollState()
     Column(Modifier.weight(1f).fillMaxWidth()) {
         val gridState = rememberLazyGridState()
         LazyVerticalGrid(
@@ -118,28 +122,24 @@ private fun ColumnScope.ConnectedPrinterSession(session: MoonrakerSession) {
     BottomNavigation {
         BottomNavigationItem(
             icon = { Icon(Icons.Filled.Sensors, contentDescription = null) },
-            label = { Text("") },
             selected = true,
             onClick = {
             }
         )
         BottomNavigationItem(
             icon = { Icon(Icons.Filled.BuildCircle, contentDescription = null) },
-            label = { Text("") },
             selected = false,
             onClick = {
             }
         )
         BottomNavigationItem(
             icon = { Icon(Icons.Filled.Support, contentDescription = null) },
-            label = { Text("") },
             selected = false,
             onClick = {
             }
         )
         BottomNavigationItem(
             icon = { Icon(Icons.Filled.Settings, contentDescription = null) },
-            label = { Text("") },
             selected = false,
             onClick = {
             }
@@ -171,7 +171,7 @@ private fun SensorsCard() {
                             Column(Modifier.padding(8.dp)) {
                                 Text("Extruder")
                                 Spacer(Modifier.height(4.dp))
-                                Text("270 C", style = MaterialTheme.typography.h6)
+                                Text("270°C", style = MaterialTheme.typography.h6)
                                 Spacer(Modifier.height(8.dp))
                                 Text("On")
                             }
@@ -194,7 +194,7 @@ private fun SensorsCard() {
                             Column(Modifier.padding(8.dp)) {
                                 Text("Bed")
                                 Spacer(Modifier.height(4.dp))
-                                Text("50.3 C", style = MaterialTheme.typography.h6)
+                                Text("50.3°C", style = MaterialTheme.typography.h6)
                                 Spacer(Modifier.height(8.dp))
                                 Text("On")
                             }
