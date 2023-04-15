@@ -36,7 +36,7 @@ internal fun AddInstanceScreen(host: String?, onAdded: () -> Unit) {
     var hostValue by remember { mutableStateOf(TextFieldValue(host ?: "")) }
     var nameValue by remember { mutableStateOf(TextFieldValue("")) }
 
-    val rowHeight = 48.dp
+    val rowHeight = 52.dp
     Column(
         Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -108,7 +108,13 @@ internal fun AddInstanceScreen(host: String?, onAdded: () -> Unit) {
                         // TODO: handle in background thread
                         val name = nameValue.text.ifEmpty { null }
                         // TODO: Validate host address
-                        db.moonrakerServerQueries.add(hostValue.text, name, sort)
+                        if (db.moonrakerServerQueries.findByHost(hostValue.text)
+                                .executeAsOneOrNull() == null
+                        ) {
+                            db.moonrakerServerQueries.add(hostValue.text, name, sort)
+                        } else {
+                            // TODO: Update fields
+                        }
                         val settings: Settings = koin().get()
                         settings[SettingsKeys.DefaultHost] = hostValue.text
                         Napier.d("Save instance: ${hostValue.text} with name: $name")
