@@ -1,4 +1,4 @@
-package com.linroid.klipperx
+package com.linroid.klipperx.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.LayoutDirection
 
-internal val safeAreaState = mutableStateOf(PaddingValues())
-internal val LocalSafeArea = compositionLocalOf { safeAreaState }
+val safeAreaState = mutableStateOf(PaddingValues())
+val LocalSafeArea = compositionLocalOf { safeAreaState }
 
 @Composable
 internal fun SafeArea(

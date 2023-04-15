@@ -2,6 +2,7 @@ package com.linroid.klipperx
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp
+import com.linroid.klipperx.ui.safeAreaState
 import moe.tlaster.precompose.PreComposeApplication
 import platform.CoreGraphics.CGFloat
 
