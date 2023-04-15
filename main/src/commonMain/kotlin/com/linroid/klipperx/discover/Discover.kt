@@ -22,11 +22,6 @@ import com.linroid.klipperx.moonraker.MoonrakerDiscover
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
-internal val darkModeState = mutableStateOf(false)
-internal val safeAreaState = mutableStateOf(PaddingValues())
-// internal val SafeArea = compositionLocalOf { safeAreaState }
-// internal val DarkMode = compositionLocalOf { darkModeState }
-
 @Composable
 internal fun DiscoverScreen(modifier: Modifier = Modifier, onAdd: (String?) -> Unit) {
     val hosts = remember { mutableStateListOf<String>() }

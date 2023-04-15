@@ -47,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
+import com.linroid.klipperx.LocalSafeArea
 import com.linroid.klipperx.moonraker.Host
 import com.linroid.klipperx.foundation.koin
 import com.linroid.klipperx.moonraker.MoonrakerSession
@@ -60,7 +61,7 @@ import com.linroid.klipperx.theme.red500
 @Composable
 internal fun PrinterScreen(host: Host) {
     val server = remember { mutableStateOf<MoonrakerServer?>(null) }
-    Column {
+    Column(Modifier.padding(LocalSafeArea.current.value)) {
         TopAppBar(
             title = {
                 Text(server.value?.alias ?: host.toString())

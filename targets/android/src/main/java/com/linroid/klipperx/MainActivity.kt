@@ -1,6 +1,7 @@
 package com.linroid.klipperx
 
 import MainView
+import android.content.res.Configuration
 import android.os.Bundle
 import moe.tlaster.precompose.lifecycle.PreComposeActivity
 import moe.tlaster.precompose.lifecycle.setContent
@@ -13,5 +14,10 @@ class MainActivity : PreComposeActivity() {
         setContent {
             MainView()
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        updateDarkMode()
     }
 }
