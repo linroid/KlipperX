@@ -147,7 +147,7 @@ private fun ColumnScope.ConnectedPrinterSession(session: MoonrakerSession) {
 }
 
 @Composable
-fun SensorsCard() {
+private fun SensorsCard() {
     Card(elevation = 8.dp, modifier = Modifier.fillMaxWidth()) {
         Box(Modifier.height(200.dp).padding(16.dp)) {
             Column {
@@ -216,7 +216,7 @@ fun SensorsCard() {
 }
 
 @Composable
-fun MoveActionsCard() {
+private fun MoveActionsCard() {
     Card(elevation = 8.dp, modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp)) {
             Row(Modifier.height(180.dp)) {
