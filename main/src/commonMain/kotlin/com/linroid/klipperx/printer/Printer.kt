@@ -18,8 +18,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AppBarDefaults
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -28,8 +26,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.contentColorFor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BuildCircle
 import androidx.compose.material.icons.filled.Notifications
@@ -39,7 +35,6 @@ import androidx.compose.material.icons.filled.Support
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Dataset
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,12 +45,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.linroid.klipperx.ui.LocalSafeArea
-import com.linroid.klipperx.moonraker.Host
 import com.linroid.klipperx.foundation.koin
+import com.linroid.klipperx.moonraker.Host
 import com.linroid.klipperx.moonraker.MoonrakerSession
 import com.linroid.klipperx.moonraker.connectMoonrakerSession
 import com.linroid.klipperx.storage.MoonrakerServer
@@ -117,16 +109,16 @@ private fun ColumnScope.ConnectedPrinterSession(session: MoonrakerSession) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(300.dp),
             state = gridState,
-            contentPadding = PaddingValues(8.dp),
+            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
             modifier = Modifier.fillMaxSize()
         ) {
             item {
-                Box(Modifier.padding(8.dp)) {
+                Box(Modifier.padding(4.dp)) {
                     MoveActionsCard()
                 }
             }
             item {
-                Box(Modifier.padding(8.dp)) {
+                Box(Modifier.padding(4.dp)) {
                     SensorsCard()
                 }
             }

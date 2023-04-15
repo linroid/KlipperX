@@ -1,12 +1,9 @@
 package com.linroid.klipperx
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.mutableStateOf
 import com.linroid.klipperx.discover.DiscoverScreen
-import com.linroid.klipperx.moonraker.Host
 import com.linroid.klipperx.instance.AddInstanceScreen
+import com.linroid.klipperx.moonraker.Host
 import com.linroid.klipperx.printer.PrinterScreen
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get
