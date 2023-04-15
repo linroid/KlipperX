@@ -19,7 +19,7 @@ internal fun NavigationHost(hostMode: Boolean = false, settings: Settings = koin
     KlipperXWindow {
         NavHost(
             navigator = navigator,
-            initialRoute = if (defaultHost == null && !hostMode ) "/discover" else "/printer"
+            initialRoute = if (defaultHost == null && !hostMode) "/discover" else "/printer"
         ) {
             scene("/discover") {
                 DiscoverScreen(onAdd = { host ->
@@ -37,14 +37,12 @@ internal fun NavigationHost(hostMode: Boolean = false, settings: Settings = koin
                 })
             }
             scene("/printer") { entry ->
-                var host = entry.query<String>("host")
-                if (host == null) {
-                    host = settings[SettingsKeys.DefaultHost]
+                var hostString = entry.query<String>("host")
+                if (hostString == null) {
+                    hostString = settings[SettingsKeys.DefaultHost]
                 }
-                if (host == null) {
-                    host = "127.0.0.1"
-                }
-                PrinterScreen(Host.parse(host))
+                val host = if (hostString == null) Host.LOOPBACK else Host.parse(hostString)
+                PrinterScreen(host)
             }
         }
     }

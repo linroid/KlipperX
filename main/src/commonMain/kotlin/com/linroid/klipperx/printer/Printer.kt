@@ -73,7 +73,7 @@ internal fun PrinterScreen(host: Host) {
         )
         val session = remember(host) { mutableStateOf<MoonrakerSession?>(null) }
         LaunchedEffect(host) {
-            if (host.ip == "127.0.0.1") {
+            if (host != Host.LOOPBACK) {
                 val db: Database = koin().get()
                 server.value = db.moonrakerServerQueries.findByHost(host.toString()).executeAsOne()
             } else {
