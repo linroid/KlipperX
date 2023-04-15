@@ -16,7 +16,6 @@ import org.koin.compose.koinInject
 internal fun NavigationHost(settings: Settings = koinInject()) {
     val navigator = rememberNavigator()
     val defaultHost = settings.get<String>(SettingsKeys.DefaultHost)
-    settings.clear()
     KlipperXWindow {
         NavHost(
             navigator = navigator,

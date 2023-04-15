@@ -37,6 +37,7 @@ kotlin {
                 implementation(project(":ui"))
                 implementation(project(":moonraker"))
                 api(libs.precompose)
+                api(compose.materialIconsExtended)
             }
         }
         if (isOnMacOs) {
