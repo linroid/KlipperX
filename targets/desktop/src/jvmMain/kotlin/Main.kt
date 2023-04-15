@@ -1,5 +1,4 @@
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Text
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
@@ -32,8 +31,7 @@ fun main(vararg arguments: String) = application {
             // putClientProperty("apple.awt.windowAppearance", "NSAppearanceNameVibrantLight")
         }
         Column {
-            MainView()
-            Text(arguments.contentToString())
+            MainView(hostMode = fullscreen)
         }
     }
 }

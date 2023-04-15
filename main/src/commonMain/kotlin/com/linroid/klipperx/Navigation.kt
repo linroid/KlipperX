@@ -13,13 +13,13 @@ import moe.tlaster.precompose.navigation.rememberNavigator
 import org.koin.compose.koinInject
 
 @Composable
-internal fun NavigationHost(settings: Settings = koinInject()) {
+internal fun NavigationHost(hostMode: Boolean = false, settings: Settings = koinInject()) {
     val navigator = rememberNavigator()
     val defaultHost = settings.get<String>(SettingsKeys.DefaultHost)
     KlipperXWindow {
         NavHost(
             navigator = navigator,
-            initialRoute = if (defaultHost == null) "/discover" else "/printer"
+            initialRoute = if (defaultHost == null && !hostMode ) "/discover" else "/printer"
         ) {
             scene("/discover") {
                 DiscoverScreen(onAdd = { host ->
@@ -41,7 +41,10 @@ internal fun NavigationHost(settings: Settings = koinInject()) {
                 if (host == null) {
                     host = settings[SettingsKeys.DefaultHost]
                 }
-                PrinterScreen(Host.parse(host!!))
+                if (host == null) {
+                    host = "127.0.0.1"
+                }
+                PrinterScreen(Host.parse(host))
             }
         }
     }
