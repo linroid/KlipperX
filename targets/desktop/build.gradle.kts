@@ -16,13 +16,12 @@ kotlin {
         withJava()
     }
     sourceSets {
-        val jvmMain by getting {
+        named("jvmMain") {
             dependencies {
                 implementation(project(":main"))
                 implementation(compose.desktop.currentOs)
             }
         }
-        val jvmTest by getting
     }
 }
 

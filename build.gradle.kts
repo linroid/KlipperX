@@ -1,6 +1,3 @@
-group "com.linroid.klipperx"
-version "1.0-SNAPSHOT"
-
 allprojects {
     repositories {
         google()

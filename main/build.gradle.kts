@@ -17,7 +17,6 @@ kotlin {
             license = "Apache License 2.0"
             ios.deploymentTarget = "15.2"
             podfile = project.file("../targets/ios/Podfile")
-            useLibraries()
             framework {
                 baseName = "main"
                 isStatic = true
@@ -51,7 +50,5 @@ kotlin {
 }
 
 android {
-    android {
-        namespace = "${group}.main"
-    }
+    namespace = "${group}.main"
 }
