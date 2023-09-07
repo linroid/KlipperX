@@ -24,6 +24,7 @@ napier = "2.6.1"
 multiplatform-settings = "1.0.0"
 # https://developer.android.com/kotlin/ktx#core
 android-core-ktx = "1.12.0"
+activity-compose = "1.7.2"
 
 [libraries]
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
@@ -40,12 +41,14 @@ ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "android-core-ktx" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 
 settings = { module="com.russhwolf:multiplatform-settings",  version.ref = "multiplatform-settings"}
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier"}
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
+precompose-viewmodel = { module = "moe.tlaster:precompose-viewmodel", version.ref = "precompose" }
 
 [bundles]
 koin-tests = ["koin-test"]

@@ -17,7 +17,5 @@ kotlin {
 }
 
 android {
-    android {
-        namespace = "${group}.ui"
-    }
+    namespace = "${group}.ui"
 }

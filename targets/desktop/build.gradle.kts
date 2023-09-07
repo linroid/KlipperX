@@ -20,6 +20,7 @@ kotlin {
             dependencies {
                 implementation(project(":main"))
                 implementation(compose.desktop.currentOs)
+                implementation(libs.precompose)
             }
         }
     }

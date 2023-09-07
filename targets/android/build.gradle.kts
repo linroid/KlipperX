@@ -8,11 +8,12 @@ plugins {
 
 dependencies {
     implementation(project(":main"))
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation(libs.precompose)
+    implementation(libs.activity.compose)
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     namespace = "com.linroid.klipperx"
 
