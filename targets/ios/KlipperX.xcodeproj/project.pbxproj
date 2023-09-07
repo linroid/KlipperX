@@ -93,6 +93,7 @@
 				86E69F9C29929B7C002576BB /* Sources */,
 				86E69F9D29929B7C002576BB /* Frameworks */,
 				86E69F9E29929B7C002576BB /* Resources */,
+				6CCBBB369BE85D92D698D412 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -148,6 +149,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6CCBBB369BE85D92D698D412 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-KlipperX/Pods-KlipperX-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-KlipperX/Pods-KlipperX-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KlipperX/Pods-KlipperX-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A2E254A4C23E1896E94E24F5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
