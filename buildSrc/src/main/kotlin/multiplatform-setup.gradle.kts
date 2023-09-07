@@ -3,7 +3,7 @@ plugins {
     id("kotlin-multiplatform")
 }
 kotlin {
-    android()
+    androidTarget()
     jvm("desktop") {
         jvmToolchain(11)
         testRuns["test"].executionTask.configure {
