@@ -15,7 +15,7 @@ ktor = "2.3.4"
 # https://github.com/cashapp/sqldelight/releases
 sqldelight = "2.0.0"
 # https://github.com/Tlaster/PreCompose/blob/master/docs/setup.md
-precompose="1.5.0"
+precompose="1.5.1"
 # https://square.github.io/okio/#releases
 okio = "3.3.0"
 # https://github.com/AAkira/Napier
