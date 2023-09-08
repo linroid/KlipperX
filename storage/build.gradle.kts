@@ -18,6 +18,9 @@ sqldelight {
 
 kotlin {
     sourceSets {
+        all {
+            languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+        }
         named("commonMain") {
             dependencies {
                 implementation(project(":foundation"))

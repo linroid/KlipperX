@@ -14,7 +14,7 @@ kotlin {
                 implementation(compose.material)
                 implementation(compose.animation)
                 implementation(compose.ui)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                @OptIn(ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
                 // @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 // api(compose.material3)

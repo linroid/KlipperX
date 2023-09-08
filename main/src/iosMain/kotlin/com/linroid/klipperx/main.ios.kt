@@ -7,7 +7,7 @@ import moe.tlaster.precompose.PreComposeApplication
 import platform.CoreGraphics.CGFloat
 
 @Suppress("unused")
-fun mainViewController() = PreComposeApplication("KotlinX") {
+fun mainViewController() = PreComposeApplication {
     NavigationHost()
 }
 
